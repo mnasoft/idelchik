@@ -8,6 +8,7 @@
   :serial t
   :components ((:file "package")
                (:file "idelchik")
+	       (:file "tubes")
 	       (:file "part_1")
 	       (:file "part_2")
 	       (:file "part_3")
@@ -19,6 +20,8 @@
 	       (:file "part_9")
 	       (:file "part_10")
 	       (:file "part_11")
-	       (:file "part_12")	       
+	       (:file "part_12")
+	       (:file "pnevmoshema")
+;;	       (:file "elements")
 	       ))
 
