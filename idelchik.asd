@@ -22,6 +22,7 @@
 	       (:file "part_11")
 	       (:file "part_12")
 	       (:file "pnevmoshema")
+      	       (:file "lambda")
 ;;	       (:file "elements")
 	       ))
 

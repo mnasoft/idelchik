@@ -58,7 +58,7 @@
 	     :documentation "Диаметр трубы [м].")
    (len      :accessor len   :initarg :length   :initform 1.0
 	     :documentation "Длина  трубы  [м]." )
-   (delta    :accessor truba-delta    :initarg :delta    :initform 20d-6
+   (delta    :accessor delta    :initarg :delta    :initform 20d-6
 	     :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
 
 (defclass zabornik (element)
@@ -132,11 +132,14 @@
   (format T "~A" (Named-name x)))
 
 (defmethod out ((x truba))
-  (format T "name=\"~A\"~%" (named-name x))
-  (format T "prev=\"~A\"~%" (linked-prev x))
-  (format T "next=\"~A\"~%" (linked-next x))		  
-  (format T "diameter=~A~%" (truba-diameter x))
-  (format T "length=~A~%" (truba-length x)))
+  (format nil "name=\"~A\", diameter=~A[m], len=~A[m] (~A ~A)~%"
+	  (name x)
+	  (diameter x)
+	  (len x)
+	  (nth 0 (vertexes x))
+	  (nth 1 (vertexes x))
+	  ))
+
 
 (defmethod out ((x ugolnilk))
   (format T "name=\"~A\"~%" (named-name x))
@@ -159,3 +162,4 @@
 
 (defmethod out ((g gas))
   (format nil "газ=~A" (name g)))
+
