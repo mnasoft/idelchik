@@ -64,22 +64,10 @@
 
 (defmethod λ ((tr truba) (p parametrised) (g gas) (w number))
   (let* ((aRe (Re tr p g w))
-	 (_d_pred (_delta_pred aRe))
 	 (_d (_delta tr)))
     (cond
-      ((and (< aRe (form-2-17 _d))(< aRe 2.0d3))
-       (values (Idl-2-1-a aRe) (out tr) (format nil "Re=~A" aRe) "(Idl-2-1-a aRe)"))
-      ((and (< aRe (form-2-17 _d))(< aRe 4.0d3))
-       (values "(defmethod λ) Все погибло!!! см. dia-2-1-b" (out tr) (format nil "Re=~A" aRe) ""))
-      ((and (< aRe (form-2-17 _d)) (< aRe 1.0d5))
-       (values (Idl-2-1-b aRe) (out tr) (format nil "Re=~A" aRe) "(Idl-2-1-b aRe)"))
-      ((and (< aRe (form-2-17 _d)) (< aRe 1.0d100))
-       (values (Idl-2-1-bv aRe) (out tr) (format nil "Re=~A" aRe) "(Idl-2-1-bv aRe)"))
-      ((and (< aRe (form-2-18 _d)))
-       (values (Idl-2-2 aRe _d) (out tr) (format nil "Re=~A" aRe) "(Idl-2-2 aRe _d)"))
-     (T (values (Idl-2-6-lambda _d)(out tr) (format nil "Re=~A" aRe) "(Idl-2-6-lambda _d)")))))
-
-
+      ((= _d 0.0) (Idl-2-1-λ_gl aRe))
+      (T (Idl-2-2-λ_ravnomer aR _d)))))
 
 (defmethod Δ ((tr truba) (p parametrised) (g gas) (w number))
   "Пример использования
@@ -91,4 +79,5 @@
 ;;;;(defparameter param1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0))) 
 ;;;;(defparameter gas1 (make-instance 'gas :name "Воздух"))
 ;;;;(defparameter gas2 (make-instance 'gas :name "Водород"))
-(out tr1)
+
+;;;;(out tr1)

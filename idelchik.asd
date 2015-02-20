@@ -8,6 +8,7 @@
   :serial t
   :components ((:file "package")
                (:file "idelchik")
+	       (:file "table_aproximate")
 	       (:file "tubes")
 	       (:file "part_1")
 	       (:file "part_2")

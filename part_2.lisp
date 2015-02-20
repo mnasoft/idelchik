@@ -7,15 +7,23 @@
   (коэффициенты сопротивления трения и параметры шероховатости)")
 
 (defparameter
-    dia-2-1-b
-  '(
-    (2000.0 0.0275)
-    (3000.0 0.035)
-    (4000.0 0.040)
-    ))
+    dia-2-1-b-2000-4000-data
+  '((1111.0 0.032)
+    (2.0e3 0.032)
+    (2.5e3 0.034)
+    (3.0e3 0.040)
+    (4.0e3 0.040)
+    (4444.0 0.040)))
+
+(defparameter Idl-2-1-b_2000_4000-data
+  '())
+
+(defun dia-2-1-b-2000-4000(x)
+  (table_aproximate x dia-2-1-b-2000-4000-data))
 
 (defun Idl-2-1-a (Re)
   "(mapcar #'Idl-2-1-a '(10 100 500 1000 2000))
+Гладкостенная труба
 "
   (/ 64.0 Re))
 
@@ -61,8 +69,7 @@
 	   lam1 (multiple-value-bind
 		      (a1 b1 c1 _d1 _Re1 _lam1) (Idl-2-2-_d-Re-lam _d Re lam0)
 		  (Idl-2-2-a1-b1-c1 a1 b1 c1 _d1 _Re1 _lam1))
-	   lam0 (sqrt (* lam1 lam0)))
-    ))
+	   lam0 (sqrt (* lam1 lam0)))))
 
 (defun _delta_pred(Re)
   (/ ( - (* 18.0 (lg Re)) 16.4) Re))
@@ -89,38 +96,39 @@
 (defun Idl-2-6-lambda (delta)
   (/ 1.0 (* 2.0 2.0 (lg (/ 3.7 delta))(lg (/ 3.7 delta)))))
 
-(defun table_aproximate (x table)
-  (do* ((x_min -1.0d100) 
-	(x_max 1.0d100)
-	(xx_min 1.0d100) 
-	(xx_max -1.0d100)
-	(x_i nil)
-	(y_i nil)
-	(i 0 (1+ i))
-	(len (length table)))
-       ((>= i len) (values xx_min (list x_min y_min) x (list x_max y_max) xx_max))
-    (setf x_i (car (nth i table))
-	  y_i (cadr (nth i table))
- 	  xx_min (min xx_min x_i)
-	  xx_max (max xx_max x_i))
-    (if (and (>= x_i x) (<= x_i x_max))
-	(setf x_max x_i
-	      y_max y_i))
-    (if (and (<= x_i x) (>= x_i x_min))
-	(setf x_min x_i
-	      y_min y_i))))
 
-(table_aproximate 10.25 '((1.0 1.1) (2.0 2.2) (3.0 3.3)(4.0 4.4) (5.0 5.5)))
-
-  (let
-      ((x_min (car (first table)))
-       (x_max (car (last table)))
-       )
-    
+(defun Idl-2-1-b_2000_4000 (x)
+  1000.
     )
-(cond
-      ((< x x_min)
-       
-       )
-      )
-(last '( 1 2 3 4 5 6))
+
+(defmethod Idl-2-1-λ_gl (aRe)
+  (cond
+    ( (<= aRe 2.0d3)
+     (values (Idl-2-1-a aRe) (format nil "Re=~A" aRe) "(Idl-2-1-a aRe)"))
+    ((and (<= 2.0d3 aRe) (<= aRe 4.0d3))
+     (values (dia-2-1-b-2000-4000 aRe)  (format nil "Re=~A" aRe) "(dia-2-1-b-2000-4000 aRe)"))
+    ((and (<= 4.0d3 aRe) (<= aRe 100.0d3))
+     (values (Idl-2-1-b aRe)  (format nil "Re=~A" aRe) "(Idl-2-1-b aRe)"))
+    ((and (<= 100.0d3 aRe))
+     (values (Idl-2-1-bv aRe)  (format nil "Re=~A" aRe) "(Idl-2-1-bv aRe)"))))
+
+(defmethod Idl-2-2-λ_ravnomer (aRe _d)
+  (let* ((_d_pred (_delta_pred aRe)))
+    (cond
+      ((and (<= aRe (form-2-17 _d)))
+       (values (Idl-2-1-λ_gl aRe)
+	       (format nil "Re=~A" aRe)
+	       "(Idl-2-1-λ_gl aRe)"))
+      ((<= aRe (form-2-18 _d))
+       (values (Idl-2-2 aRe _d)
+	       (format nil "Re=~A" aRe)
+	       "(Idl-2-2 aRe _d)"))
+      (T (values (Idl-2-6-lambda _d)
+		 (format nil "Re=~A" aRe)
+		 "(Idl-2-6-lambda _d)")))))
+
+(Idl-2-1-λ_gl 4.010e4)
+(Idl-2-2-λ_ravnomer 4.010e4 0.0009999995)
+
+(form-2-17 0.000999)
+
