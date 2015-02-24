@@ -101,7 +101,7 @@
   1000.
     )
 
-(defmethod Idl-2-1-λ_gl (aRe)
+(defun Idl-2-1-λ_gl (aRe)
   (cond
     ( (<= aRe 2.0d3)
      (values (Idl-2-1-a aRe) (format nil "Re=~A" aRe) "(Idl-2-1-a aRe)"))
@@ -112,7 +112,7 @@
     ((and (<= 100.0d3 aRe))
      (values (Idl-2-1-bv aRe)  (format nil "Re=~A" aRe) "(Idl-2-1-bv aRe)"))))
 
-(defmethod Idl-2-2-λ_ravnomer (aRe _d)
+(defun Idl-2-2-λ_ravnomer (aRe _d)
   (let* ((_d_pred (_delta_pred aRe)))
     (cond
       ((and (<= aRe (form-2-17 _d)))

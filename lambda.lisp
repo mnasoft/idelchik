@@ -59,8 +59,27 @@
 	  (out g)
 	  (out p)))
 
+(defmethod Re ((ug ugolnik) (p parametrised) (g gas) (w number))
+  "Возвращает число Рейнольдса для трубы круглого поперечного сечения [1]
+Пример использования:
+(let 
+    ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
+     (g1 (make-instance 'gas :name \"Воздух\"))
+     (tr1 (make-instance 'truba  :name \"T-EE-EF\" :diameter (truba-in-dia 0.010) :length 2.500 :vertexes '(\"EE\" \"EF\")))
+     (w 15.0)
+     )
+  (Re tr1 p1 g1 w))"
+  (values (/ (* (diameter ug) w) (ν p g))
+	  "[1]"
+	  "Число Рейнольдса для газа"
+	  (out g)
+	  (out p)))
+
 (defmethod _delta( (tr truba) )
   (/ (delta tr)(diameter tr)))
+
+(defmethod _delta( (ug ugolnik) )
+  (/ (delta ug)(diameter ug)))
 
 (defmethod λ ((tr truba) (p parametrised) (g gas) (w number))
   (let* ((aRe (Re tr p g w))
@@ -74,10 +93,55 @@
 (Δ tr1 param1 gas1 10.0)"
   (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
 
-;;(let ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0))) (g1 (make-instance 'gas :name "Воздух"))) (ρ p1 g1))
-;;;;(defparameter tr1 (make-instance 'truba :name "T-EE-EF" :diameter 0.071 :length 2.500 :vertexes '("EE" "EF")))
-;;;;(defparameter param1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0))) 
-;;;;(defparameter gas1 (make-instance 'gas :name "Воздух"))
-;;;;(defparameter gas2 (make-instance 'gas :name "Водород"))
+;;;;(defparameter tr1    (make-instance 'truba :name "T-EE-EF" :diameter 0.070 :length 2.500 :vertexes '("EE" "EF")))
+;;;;(defparameter ug1    (make-instance 'ugolnik :name "T-EE-EF" :diameter 0.070 :vertexes '("EE" "EF")))
+;;;;(defparameter p1 (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
+;;;;(defparameter g1 (make-instance 'gas :name "Воздух"))
+;;;;(Re ug1 p1 g1 20)
 
-;;;;(out tr1)
+;;;;(defparameter u1 (make-instance 'ugolnik :name "U-BN-BP" :diameter (ugolnik-in-dia 0.075) :radius (ugolnik-radius 0.075) :vertexes '("BN" "BP")))
+
+(defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))
+  (let* ((R0 (radius u1))
+	 (D0 (diameter u1))
+	 (R0_D0 (/ R0 D0))
+	 (aRe (Re ug p g w))
+	 (_d (_delta ug)))
+    (cond
+      ((and (< R0_D0 3.0) (= _d 0.0))
+       (values (Idl-6-1-1-ζ-277 aRe (alfa ug) (radius u1) (diameter u1))
+	       (format nil "R0=~S" R0)
+	       (format nil "D0=~S" D0)
+       	       (format nil "R0_D0=~S" R0_D0)
+	       (format nil "aRe=~S" aRe)
+	       (format nil "_d=~S" _d)))
+      ((< R0_D0 3.0)
+       (values (Idl-6-1-2-ζ-277 aRe (alfa ug) (radius u1) (diameter u1) _d)
+	       (format nil "R0=~S" R0)
+	       (format nil "D0=~S" D0)
+       	       (format nil "R0_D0=~S" R0_D0)
+	       (format nil "aRe=~S" aRe)
+	       (format nil "_d=~S" _d)))
+      (T
+       (values (format nil "Все погибло defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))")
+	       (format nil "R0=~S" R0)
+	       (format nil "D0=~S" D0)
+       	       (format nil "R0_D0=~S" R0_D0)
+	       (format nil "aRe=~S" aRe)
+	       (format nil "_d=~S" _d))))))
+
+(defmethod Δ ((ug ugolnik) (p parametrised) (g gas) (w number))
+    "Потери давления в угольнике
+(Δ u1 p1 g1 20.0)
+"
+    (*
+     (ζ ug p g w) (ρ p g) w w 0.5))
+
+
+
+
+
+
+
+
+
