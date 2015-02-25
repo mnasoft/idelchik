@@ -130,6 +130,23 @@
 	       (format nil "aRe=~S" aRe)
 	       (format nil "_d=~S" _d))))))
 
+(defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number))
+  "Здесь 
+w>0 при течении среды от сечения diameter_1->diameter_2
+w<0 при течении среды от сечения diameter_1<-diameter_2
+"
+  (cond 
+    ( (or (and (> w 0) (<= (diameter_2 pr) (diameter_1 pr)))
+	  (and (< w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Сужение потока
+     (Idl-5-23-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1)))
+    ( (or (and (< w 0) (<= (diameter_2 pr) (diameter_1 pr)))
+	  (and (> w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Расширение потока
+     (Idl-5-5-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1))
+      (Idl-5-5-ζ (Re (max (diameter_1 pr) (diameter_2 pr))
+		     (min (diameter_1 pr) (diameter_2 pr))
+		     (len pr) mikro)
+      )))
+
 (defmethod Δ ((ug ugolnik) (p parametrised) (g gas) (w number))
     "Потери давления в угольнике
 (Δ u1 p1 g1 20.0)
@@ -137,19 +154,16 @@
     (*
      (ζ ug p g w) (ρ p g) w w 0.5))
 
+(defmethod Δ ((pr perehod) (p parametrised) (g gas) (w number))
+    "Потери давления в переходе
+(Δ u1 p1 g1 20.0)
+"
+    (*
+     (ζ pr p g w) (ρ p g) w w 0.5))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number))
-  "Здесь 
-w>0 при течении среды от сечения diameter_1->diameter_2
-w<0 при течении среды от сечения diameter_1<-diameter_2
-"
-  (cond 
-    ((or (and (> w 0) (<= (diameter_2 pr) (diameter_1 pr)))
-	 (and (< w 0) (<= (diameter_1 pr) (diameter_2 pr)))
-	 )
-     (Idl-5-23-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1))
-    (T T))))
+
 
 ;;;;(defparameter p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
 ;;;;(defparameter g1  (make-instance 'gas :name "Воздух"))
