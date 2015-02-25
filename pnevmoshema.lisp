@@ -18,13 +18,12 @@
 	  ))
 
 
-(defmethod out ((x ugolnilk))
+(defmethod out ((x ugolnik))
   (format T "name=\"~A\"~%" (named-name x))
-  (format T "prev=\"~A\"~%" (linked-prev x))
-  (format T "next=\"~A\"~%" (linked-next x))		  
-  (format T "diameter=~A~%" (truba-diameter x))
-  (format T "length=~A~%" (truba-length x))
-  (format T "radius=~A~%" (ugolnilk-radius x)))
+  (format T "diameter=~A~%" (diameter x))
+  (format T "radius=~A~%" (radius x))
+  (format T "alfa=~A~%" (alfa x)))
+
 
 (defmethod out ((x perehod))
   (format T "name=\"~A\"~%" (named-name x))
@@ -39,4 +38,3 @@
 
 (defmethod out ((g gas))
   (format nil "газ=~A" (name g)))
-

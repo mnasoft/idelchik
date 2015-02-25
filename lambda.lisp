@@ -60,12 +60,12 @@
 	  (out p)))
 
 (defmethod Re ((ug ugolnik) (p parametrised) (g gas) (w number))
-  "Возвращает число Рейнольдса для трубы круглого поперечного сечения [1]
+  "Возвращает число Рейнольдса для угольника (отвода) круглого поперечного сечения [1]
 Пример использования:
 (let 
     ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
      (g1 (make-instance 'gas :name \"Воздух\"))
-     (tr1 (make-instance 'truba  :name \"T-EE-EF\" :diameter (truba-in-dia 0.010) :length 2.500 :vertexes '(\"EE\" \"EF\")))
+     (ug1 (make-instance 'ugolnik :name \"T-EE-EF\" :diameter 0.070 :vertexes '(\"EE\" \"EF\")))
      (w 15.0)
      )
   (Re tr1 p1 g1 w))"
@@ -75,11 +75,19 @@
 	  (out g)
 	  (out p)))
 
+(defmethod Re ((pr perehod) (p parametrised) (g gas) (w number))
+  (/ (* (min (diameter_1 pr) (diameter_2 pr)) w) (ν p g)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmethod _delta( (tr truba) )
   (/ (delta tr)(diameter tr)))
 
 (defmethod _delta( (ug ugolnik) )
   (/ (delta ug)(diameter ug)))
+
+(defmethod _delta( (pr perehod))
+  (/ (delta pr) (min (diameter_1 pr) (diameter_2 pr))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod λ ((tr truba) (p parametrised) (g gas) (w number))
   (let* ((aRe (Re tr p g w))
@@ -92,14 +100,6 @@
   "Пример использования
 (Δ tr1 param1 gas1 10.0)"
   (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
-
-;;;;(defparameter tr1    (make-instance 'truba :name "T-EE-EF" :diameter 0.070 :length 2.500 :vertexes '("EE" "EF")))
-;;;;(defparameter ug1    (make-instance 'ugolnik :name "T-EE-EF" :diameter 0.070 :vertexes '("EE" "EF")))
-;;;;(defparameter p1 (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
-;;;;(defparameter g1 (make-instance 'gas :name "Воздух"))
-;;;;(Re ug1 p1 g1 20)
-
-;;;;(defparameter u1 (make-instance 'ugolnik :name "U-BN-BP" :diameter (ugolnik-in-dia 0.075) :radius (ugolnik-radius 0.075) :vertexes '("BN" "BP")))
 
 (defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))
   (let* ((R0 (radius u1))
@@ -137,11 +137,28 @@
     (*
      (ζ ug p g w) (ρ p g) w w 0.5))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number))
+  "Здесь 
+w>0 при течении среды от сечения diameter_1->diameter_2
+w<0 при течении среды от сечения diameter_1<-diameter_2
+"
+  (cond 
+    ((or (and (> w 0) (<= (diameter_2 pr) (diameter_1 pr)))
+	 (and (< w 0) (<= (diameter_1 pr) (diameter_2 pr)))
+	 )
+     (Idl-5-23-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1))
+    (T T))))
 
+;;;;(defparameter p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
+;;;;(defparameter g1  (make-instance 'gas :name "Воздух"))
 
+;;;;(defparameter tr1 (make-instance 'truba :name "T-EE-EF" :diameter 0.070 :length 2.500 :vertexes '("EE" "EF")))
+;;;;(defparameter ug1 (make-instance 'ugolnik :name "T-EE-EF" :diameter 0.070 :vertexes '("EE" "EF")))
+;;;;(defparameter pr1 (make-instance 'perehod :name "P1" :diameter_1 (ugolnik-in-dia 0.053) :diameter_2 (ugolnik-in-dia 0.075) :len 0.050 :vertexes '("AL" "AM")))
 
+;;;;(Re pr1 p1 g1 20)
 
-
-
+;;;;(ζ  pr1 p1 g1 -20)
 

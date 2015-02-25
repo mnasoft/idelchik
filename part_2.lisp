@@ -102,6 +102,8 @@
     )
 
 (defun Idl-2-1-λ_gl (aRe)
+    "Коэффициент трения для гладкой трубы
+"
   (cond
     ( (<= aRe 2.0d3)
      (values (Idl-2-1-a aRe) (format nil "Re=~A" aRe) "(Idl-2-1-a aRe)"))
@@ -113,6 +115,8 @@
      (values (Idl-2-1-bv aRe)  (format nil "Re=~A" aRe) "(Idl-2-1-bv aRe)"))))
 
 (defun Idl-2-2-λ_ravnomer (aRe _d)
+  "Коэффициент трения для равномерно-шероховатой трубы
+"
   (let* ((_d_pred (_delta_pred aRe)))
     (cond
       ((and (<= aRe (form-2-17 _d)))
