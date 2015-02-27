@@ -35,16 +35,24 @@
 	  (out p)))
 
 (defmethod ν ((p parametrised) (g gas))
-    "Возвращает коэффициент кинематической вязкости газа [m^2/s]
+  "Возвращает коэффициент кинематической вязкости газа [m^2/s]
 Пример использования:
 (let 
     ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
      (g1 (make-instance 'gas :name \"Воздух\")))
   (ν p1 g1))"
-  (values (/ (η p g) (ρ p g))"[m^2/s]" "Коэффициент кинематической вязкости газа" (name g)))
+  (values
+   (/ (η p g) (ρ p g))
+   "[m^2/s]"
+   (format nil "Коэффициент кинематической вязкости газа ~S ~S" (print g) (print p))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod Re ((tr truba) (p parametrised) (g gas) (w number))
   "Возвращает число Рейнольдса для трубы круглого поперечного сечения [1]
+tr - труба;
+p  - параметр;
+g  - газ;
+w  [м/с] (-inf inf) - скорость
 Пример использования:
 (let 
     ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
@@ -53,14 +61,19 @@
      (w 15.0)
      )
   (Re tr1 p1 g1 w))"
-  (values (/ (* (diameter tr) w) (ν p g))
+  (values (/ (* (abs w) (diameter tr)) (ν p g))
 	  "[1]"
 	  "Число Рейнольдса для газа"
-	  (out g)
-	  (out p)))
+	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print tr) w)))
+
+;;;;(defmethod Re ((tr metallorukav) (p parametrised) (g gas) (w number))) - определяется по формулам для трубы.
 
 (defmethod Re ((ug ugolnik) (p parametrised) (g gas) (w number))
   "Возвращает число Рейнольдса для угольника (отвода) круглого поперечного сечения [1]
+ug - угольник;
+p  - параметр;
+g  - газ;
+w  [м/с] (-inf inf) - скорость
 Пример использования:
 (let 
     ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
@@ -68,19 +81,40 @@
      (ug1 (make-instance 'ugolnik :name \"T-EE-EF\" :diameter 0.070 :vertexes '(\"EE\" \"EF\")))
      (w 15.0)
      )
-  (Re tr1 p1 g1 w))"
-  (values (/ (* (diameter ug) w) (ν p g))
+  (Re ug1 p1 g1 w))
+"
+  (values (/ (* (abs w) (diameter ug)) (ν p g))
 	  "[1]"
-	  "Число Рейнольдса для газа"
-	  (out g)
-	  (out p)))
+	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print ug) w)))
 
 (defmethod Re ((pr perehod) (p parametrised) (g gas) (w number))
-  (/ (* (min (diameter_1 pr) (diameter_2 pr)) w) (ν p g)))
+  "Возвращает значение числа Рейнольдса для перехода [1]
+ug - переход;
+p  - параметр;
+g  - газ;
+w  [м/с] (-inf inf) - скорость
+Пример использования:
+(let 
+    ((p1 (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 400.0)))
+     (g1 (make-instance 'gas :name \"Воздух\"))
+     (pr1 (make-instance 'perehod :name \"P1\" :diameter_1 (ugolnik-in-dia 0.053) :diameter_2 (ugolnik-in-dia 0.075) :len 0.050 :vertexes '(\"AL\" \"AM\")))
+     (w 15.0)
+     )
+  (Re pr1 p1 g1 w))
+"
+  (values (/ (* (abs w)
+		(min (diameter_1 pr) (diameter_2 pr)))
+	     (ν p g))
+	  "[1]"
+	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print pr) w)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod _delta( (tr truba) )
   (/ (delta tr)(diameter tr)))
+
+(defmethod _delta( (mr metallorukav) )
+  (/ (max (gofra_hight mr) (delta mr) )
+     (diameter mr)))
 
 (defmethod _delta( (ug ugolnik) )
   (/ (delta ug)(diameter ug)))
@@ -94,41 +128,39 @@
 	 (_d (_delta tr)))
     (cond
       ((= _d 0.0) (Idl-2-1-λ_gl aRe))
-      (T (Idl-2-2-λ_ravnomer aR _d)))))
+      (T (Idl-2-2-λ_ravnomer aRe _d)))))
 
-(defmethod Δ ((tr truba) (p parametrised) (g gas) (w number))
-  "Пример использования
-(Δ tr1 param1 gas1 10.0)"
-  (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
+;;;;(defmethod λ ((tr metallorukav) (p parametrised) (g gas) (w number)) - определяется по формулам для трубы.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))
-  (let* ((R0 (radius u1))
-	 (D0 (diameter u1))
+  (let* ((R0 (radius ug))
+	 (D0 (diameter ug))
 	 (R0_D0 (/ R0 D0))
 	 (aRe (Re ug p g w))
 	 (_d (_delta ug)))
     (cond
       ((and (< R0_D0 3.0) (= _d 0.0))
-       (values (Idl-6-1-1-ζ-277 aRe (alfa ug) (radius u1) (diameter u1))
-	       (format nil "R0=~S" R0)
-	       (format nil "D0=~S" D0)
-       	       (format nil "R0_D0=~S" R0_D0)
-	       (format nil "aRe=~S" aRe)
-	       (format nil "_d=~S" _d)))
+       (values
+	(Idl-6-1-1-ζ-277 aRe
+			 (alfa ug)
+			 (radius ug)
+			 (diameter ug))
+	"[1]"
+	(format nil "Коэффициент местного сопротивления ~S ~S ~S ~S[м/с]" ug p g  w)))
       ((< R0_D0 3.0)
-       (values (Idl-6-1-2-ζ-277 aRe (alfa ug) (radius u1) (diameter u1) _d)
-	       (format nil "R0=~S" R0)
-	       (format nil "D0=~S" D0)
-       	       (format nil "R0_D0=~S" R0_D0)
-	       (format nil "aRe=~S" aRe)
-	       (format nil "_d=~S" _d)))
+       (values
+	(Idl-6-1-2-ζ-277 aRe
+			 (alfa ug)
+			 (radius ug)
+			 (diameter ug) _d)
+	"[1]"
+	(format nil "Коэффициент местного сопротивления ~S ~S ~S ~S[м/с]" ug p g  w)))
       (T
        (values (format nil "Все погибло defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))")
-	       (format nil "R0=~S" R0)
-	       (format nil "D0=~S" D0)
-       	       (format nil "R0_D0=~S" R0_D0)
-	       (format nil "aRe=~S" aRe)
-	       (format nil "_d=~S" _d))))))
+	       "[1]"
+	       (format nil "Коэффициент местного сопротивления ~S ~S ~S ~S[м/с]" ug p g  w))))))
 
 (defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number))
   "Здесь 
@@ -136,16 +168,40 @@ w>0 при течении среды от сечения diameter_1->diameter_2
 w<0 при течении среды от сечения diameter_1<-diameter_2
 "
   (cond 
-    ( (or (and (> w 0) (<= (diameter_2 pr) (diameter_1 pr)))
-	  (and (< w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Сужение потока
-     (Idl-5-23-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1)))
-    ( (or (and (< w 0) (<= (diameter_2 pr) (diameter_1 pr)))
-	  (and (> w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Расширение потока
-     (Idl-5-5-1-ζ 2e5 (diameter_1 pr) (diameter_2 pr) (len pr) (_delta pr1))
-      (Idl-5-5-ζ (Re (max (diameter_1 pr) (diameter_2 pr))
-		     (min (diameter_1 pr) (diameter_2 pr))
-		     (len pr) mikro)
-      )))
+    ((or (and (> w 0) (<= (diameter_2 pr) (diameter_1 pr)))
+	 (and (< w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Сужение потока
+					;     (break "BR1: Сужение потока~% defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number))")
+     (values (Idl-5-23-1-ζ
+	      (Re pr p g w)
+	      (max (diameter_1 pr) (diameter_2 pr))
+     	      (min (diameter_1 pr) (diameter_2 pr))
+	      (len pr)
+	      (delta pr))
+	     "[1]"
+	     (format nil "Коэффициент местного сопротивления конфузора ~S ~S ~S ~S[м/с]" pr p g  w)))
+    ((or (and (< w 0) (<= (diameter_2 pr) (diameter_1 pr)))
+	 (and (> w 0) (<= (diameter_1 pr) (diameter_2 pr)))) ;;;; Расширение потока
+					;     (break "BR1: Расширение потока~% defmethod ζ ((pr perehod) (p parametrised) (g gas) (w number)) ")
+     (values (Idl-5-5-ζ (Re pr p g w)
+			(max (diameter_1 pr) (diameter_2 pr))
+			(min (diameter_1 pr) (diameter_2 pr))
+			(len pr)
+			(delta pr))
+	     "[1]"
+	     (format nil "Коэффициент местного сопротивления диффузора ~S ~S ~S ~S[м/с]" pr p g  w)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod Δ ((tr truba) (p parametrised) (g gas) (w number))
+    "Пример использования
+(let ((p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0))))
+  ())
+(Δ tr1 param1 gas1 10.0))
+"
+;    (break "Δ ((tr truba) (p parametrised) (g gas) (w number))")
+    (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
+
+;;;;(defmethod Δ ((tr metallorukav) (p parametrised) (g gas) (w number)) - определяется по формулам для трубы.
 
 (defmethod Δ ((ug ugolnik) (p parametrised) (g gas) (w number))
     "Потери давления в угольнике
@@ -155,24 +211,8 @@ w<0 при течении среды от сечения diameter_1<-diameter_2
      (ζ ug p g w) (ρ p g) w w 0.5))
 
 (defmethod Δ ((pr perehod) (p parametrised) (g gas) (w number))
-    "Потери давления в переходе
+    "Потери давления в переходе [1]
 (Δ u1 p1 g1 20.0)
 "
     (*
      (ζ pr p g w) (ρ p g) w w 0.5))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-;;;;(defparameter p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
-;;;;(defparameter g1  (make-instance 'gas :name "Воздух"))
-
-;;;;(defparameter tr1 (make-instance 'truba :name "T-EE-EF" :diameter 0.070 :length 2.500 :vertexes '("EE" "EF")))
-;;;;(defparameter ug1 (make-instance 'ugolnik :name "T-EE-EF" :diameter 0.070 :vertexes '("EE" "EF")))
-;;;;(defparameter pr1 (make-instance 'perehod :name "P1" :diameter_1 (ugolnik-in-dia 0.053) :diameter_2 (ugolnik-in-dia 0.075) :len 0.050 :vertexes '("AL" "AM")))
-
-;;;;(Re pr1 p1 g1 20)
-
-;;;;(ζ  pr1 p1 g1 -20)
-
