@@ -35,8 +35,7 @@
 (defclass vertex (named parametrised)
   ()
   (:documentation "Представляет вершину графа."))
-(defmethod print-object :before ((x vertex)(s stream)) (format s "#vertex("))
-(defmethod print-object :after  ((x vertex)(s stream)) (format s ")"))
+(defmethod print-object :before ((x vertex)(s stream)) (format s "#vertex"))
 (defmethod print-object         ((x vertex)(s stream)) 
   (format s "(pressure=~S tempreche=~S name=~S)"
 	  (pressure x) (tempreche x) (name x)))
@@ -53,6 +52,20 @@
   (format s "(rib-v1=~S rib-v2=~S name=~S)"
 	  (rib-v1 x) (rib-v2 x) (name x)))
 
+(defmethod rib-name ((x rib))
+    "Выполняет вывод на печать списка рёбер в форме пригодной для вставки в исходный код
+Пример исползования:
+(mapcar #'(lambda (el) (rib-name el)) ribs)
+"
+    (format T "(make-instance 'gidro-rib :v1 \"~A\" :v2 \"~A\" :name \"~A-~A\")~%"
+	    (rib-v1 x)
+	    (rib-v2 x)
+	    (rib-v1 x)
+	    (rib-v2 x)))
+
+(defun make-rib-name (v1 v2)
+  (concatenate 'string  v1 "-" v2))
+
 (defclass gidro-rib (rib)
   ((area1 :accessor gidro-rib-area1 :initarg :area1 :initform 1.0
        :documentation "Первая площадь ребра.")
@@ -65,8 +78,11 @@
 
 (defmethod print-object :before ((x gidro-rib)(s stream)) (format s "#gidro-rib"))
 (defmethod print-object         ((x gidro-rib)(s stream)) 
-  (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S )"
+  (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S)"
 	  (gidro-rib-mass-flow-rate x) (gidro-rib-area1 x) (gidro-rib-area1 x) (rib-v1 x) (rib-v2 x) (name x)))
+
+(defun make-gidro-rib (v1 v2)
+  (make-instance 'gidro-rib :v1 v1 :v2 v2 :name (make-rib-name v1 v2)))
 
 (defclass element (named)
   ((num  :accessor num
@@ -82,6 +98,14 @@
 (defmethod print-object         ((x element)(s stream)) 
   (format s "(num=~S vertexes=~S name=~S )"
 	  (num x) (vertexes x) (name x)))
+
+(defmethod mk-rib ((x element))
+  "Создаёт список рёбер, основанный на списке вершин элемента."
+  (let ((v-lst (vertexes x)))
+    (cond
+      ((= 2 (length v-lst))
+       (list (make-gidro-rib (first v-lst) (second v-lst))))
+      (T nil))))
 
 (defclass truba (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
@@ -180,6 +204,22 @@
 (defmethod print-object         ((x troynik)(s stream)) 
   (format s "(d_1=~S d_2=~S d3=~S α_1=~S α_2=~S α_3=~S num=~S vertexes=~S name=~S)"
 	  (diameter_1 x)(diameter_2 x) (diameter_3 x) (alfa_1 x) (alfa_2 x) (alfa_2 x) (num x) (vertexes x) (name x)))
+
+(defmethod mk-rib ((x troynik))
+  "Создаёт список рёбер тройника, основанный на списке вершин элемента."
+  (let* ((v-lst (vertexes x))
+	 (v1 (first  v-lst))
+	 (v2 (second v-lst))
+	 (v3 (third  v-lst))
+	 (vc (fourth v-lst)))
+    (break "BR1:(defmethod mk-rib ((x troynik))")
+    (cond
+      ((= 4 (length v-lst))
+       (list
+	(make-gidro-rib v1 vc)
+	(make-gidro-rib v2 vc)
+	(make-gidro-rib v3 vc)))
+      (T nil))))
 
 (defparameter assa
   (make-instance 'troynik))
