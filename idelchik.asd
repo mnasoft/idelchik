@@ -9,6 +9,7 @@
   :components ((:file "package")
                (:file "idelchik")
 	       (:file "classes")
+	       (:file "class_methods")
 	       (:file "table_aproximate")
 	       (:file "tubes")
 	       (:file "part_1")
@@ -26,6 +27,5 @@
 	       (:file "pnevmoshema")
       	       (:file "lambda")
 	       (:file "elements")
-      	       (:file "test")
-	       ))
+      	       (:file "test")))
 

@@ -30,7 +30,7 @@
 
 (defmethod print-object :before ((x parametrised)(s stream)) (format s "#parametrised"))
 (defmethod print-object ((x parametrised)(s stream))
-  (format s "(pressure=~S tempreche=~S)" (pressure x) (tempreche x)))
+  (format s "(pressure=~S[Па] tempreche=~S[К])" (pressure x) (tempreche x)))
 
 (defclass vertex (named parametrised)
   ()
@@ -212,7 +212,7 @@
 	 (v2 (second v-lst))
 	 (v3 (third  v-lst))
 	 (vc (fourth v-lst)))
-    (break "BR1:(defmethod mk-rib ((x troynik))")
+;;;;    (break "BR1:(defmethod mk-rib ((x troynik))")
     (cond
       ((= 4 (length v-lst))
        (list
