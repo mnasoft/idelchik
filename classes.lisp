@@ -153,7 +153,8 @@
 	  (diameter_1 x) (diameter_2 x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
 (defclass forsunka (element)
-  ((area :accessor area  :initarg  :area :initform 1.0)))
+  ((area :accessor area  :initarg  :area :initform 1.0))
+    (:documentation "Представляет форсунку для выдачи газообразного топлива."))
 
 (defmethod print-object :before ((x forsunka)(s stream)) (format s "#forsunka"))
 (defmethod print-object         ((x forsunka)(s stream)) 
