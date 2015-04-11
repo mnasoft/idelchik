@@ -126,6 +126,30 @@ p_in и p_out
   (setf (area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
   f)
 
+(require 'half-div)
+
+(defun xxx_mass(pr_in f M p_in p_out g)
+  (setf (pressure p_in) pr_in )
+  (- (mass-flow-rate f p_in p_out g) M))
+
+(defparameter f_01 (make-instance 'forsunka :area 30e-6))
+(defparameter p_in_01 (make-instance 'parametrised))
+(defparameter p_out_01 (make-instance 'parametrised))
+(defparameter g_01 (make-instance 'gas :name "Воздух"))
+
+(xxx_mass 2e5 f_01 0.2 p_in_01 p_out_01 g_01)
+
+
+(defmethod param_in-by-Mass-flow-rate((f forsunka) (Mass-flow-rate number) (p_in  parametrised) (p_out parametrised) (g gas))
+  "!!! Определят и устанавливает площадь для форсунки f такую,
+чтобы через нее проходил "
+  (half-div:h-div-lst p_out p_in #'mass-flow-rate (list f p_in  p_out g gas) )
+  G-1-80_81((Area number)
+		     (p_in  parametrised)
+		     (p_out parametrised)
+		     (g gas))
+  )
+
 ;;;;(remove-method #'mass-flow-rate
 ;;;;(find-method #'mass-flow-rate '() (mapcar #'find-class '(forsunka parametrised parametrised gas)) nil)
 ;;;;)
