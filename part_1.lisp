@@ -10,6 +10,7 @@
 		     (p_out parametrised)
 		     (g gas))
   "I v3 p41
+Определяет расход воздуха через сопло.
 Пример использования:
 (G-1-80_81 30e-6
 	   (make-instance 'parametrised :tempreche 288.15 :pressure 2e5)
