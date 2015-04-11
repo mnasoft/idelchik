@@ -222,10 +222,6 @@
 	(make-gidro-rib v3 vc)))
       (T nil))))
 
-(defparameter assa
-  (make-instance 'troynik))
-(print assa)
-
 (defclass teploobmennik(element)
   ())
 
@@ -242,6 +238,3 @@
 (defclass valve-obr (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Условный диаметр [м].")))
-
-(defparameter assa 
-(make-instance 'named :name "Cool"))
