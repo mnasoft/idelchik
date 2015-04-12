@@ -21,7 +21,7 @@
 (defmethod print-object :before ((x gas)(s stream)) (format s "#gas" ))
 
 
-(defclass parametrised ()
+(defclass parametrised (named)
   ((pressure   :accessor pressure    :initarg :pressure  :initform 101325.0
 	       :documentation "Абсолютное статическое давление [Па].")
    (tempreche  :accessor tempreche :initarg :tempreche :initform 273.15
@@ -30,9 +30,9 @@
 
 (defmethod print-object :before ((x parametrised)(s stream)) (format s "#parametrised"))
 (defmethod print-object ((x parametrised)(s stream))
-  (format s "(pressure=~S[Па] tempreche=~S[К])" (pressure x) (tempreche x)))
+  (format s "(P=~S[Па] T=~S[К] name=~S)" (pressure x) (tempreche x) (name x)))
 
-(defclass vertex (named parametrised)
+(defclass vertex (parametrised)
   ()
   (:documentation "Представляет вершину графа."))
 (defmethod print-object :before ((x vertex)(s stream)) (format s "#vertex"))
