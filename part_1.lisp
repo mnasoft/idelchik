@@ -100,10 +100,11 @@
   "Массовый расход через насадок
 Пример использования:
 (mass-flow-rate
- (make-instance 'forsunka :area 30e-6)
- (make-instance 'parametrised :tempreche 288.15 :pressure 2e5)
- (make-instance 'parametrised :tempreche 288.15 :pressure 1.06e5)
+ (make-instance 'forsunka :area 27d-6 :name \"Форсунка\")
+ (make-instance 'parametrised :pressure (+ 100000.0 101325.) :name \"Параметры на входе\")
+ (make-instance 'parametrised :name \"Параметры на выходе\")
  (make-instance 'gas :name \"Воздух\"))
+=>0.013291542221359807d0
 "
   (G-1-80_81 (area f) p_in p_out g))
 
@@ -126,48 +127,36 @@ p_in и p_out
   (setf (area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
   f)
 
-(require 'half-div)
-
-(defun xxx_mass(pr_in f M p_in p_out g)
-  (setf (pressure p_in) pr_in )
-  (- (mass-flow-rate f p_in p_out g) M))
-
-(defparameter f_01 (make-instance 'forsunka :area 30e-6))
-(defparameter p_in_01 (make-instance 'parametrised))
-(defparameter p_out_01 (make-instance 'parametrised))
-(defparameter g_01 (make-instance 'gas :name "Воздух"))
-
-(xxx_mass 2e5 f_01 0.2 p_in_01 p_out_01 g_01)
-
-
-(defmethod param_in-by-Mass-flow-rate((f forsunka) (Mass-flow-rate number) (p_in  parametrised) (p_out parametrised) (g gas))
-  "!!! Определят и устанавливает площадь для форсунки f такую,
-чтобы через нее проходил "
-  (half-div:h-div-lst p_out p_in #'mass-flow-rate (list f p_in  p_out g gas) )
-  G-1-80_81((Area number)
-		     (p_in  parametrised)
-		     (p_out parametrised)
-		     (g gas))
-  )
-
-;;;;(remove-method #'mass-flow-rate
-;;;;(find-method #'mass-flow-rate '() (mapcar #'find-class '(forsunka parametrised parametrised gas)) nil)
-;;;;)
-
-
-;;;;(defparameter f1 (make-instance 'forsunka :area 30e-6))
-
-
-;;;;(mass-flow-rate
-;;;; (make-instance 'forsunka :area 30e-6)
-;;;; (make-instance 'parametrised :tempreche 288.15 :pressure 2e5)
-;;;; (make-instance 'parametrised :tempreche 288.15 :pressure 1.06e5)
-;;;; (make-instance 'gas :name "Воздух"))
-
-;;;;(Area-1-80_81 0.014284128
-;;;;	   (make-instance 'parametrised :tempreche 288.15 :pressure 2e5)
-;;;;	   (make-instance 'parametrised :tempreche 288.15 :pressure 1.06e5)
-;;;;	   (make-instance 'gas :name "Воздух")
-;;;;	   )
-
-
+(defmethod param_in-by-Mass-flow-rate((f forsunka)
+				       (MFR number)
+				       (p_in  parametrised)
+				       (p_out parametrised)
+				       (g gas))
+  "Вычисляет давление параметра p_in при котором 
+через форсунку f пройдет массовый расход MFR газа gas 
+при давлении на выходе, определяемом параметром p_out.
+Аргументы:
+f     - форсунка, определяет площадь;
+MFR   - массовый расход, кг/с;
+p_in  - определяет температуру перед форсункой;
+p_out - определяет давление за форсункой;
+g     - газ, протекающий через отверстия форсунки.
+Пример использования:
+(param_in-by-Mass-flow-rate
+ (make-instance 'forsunka :area 27d-6)
+ 0.013291542221359807d0
+ (make-instance 'parametrised :pressure (+ 100000.0 101325.))
+ (make-instance 'parametrised)
+ (make-instance 'gas :name \"Воздух\"))
+=>#parametrised#named(P=201325.0[Па] T=273.15[К] name=\"\"
+"
+  (let ((p_in_rez p_in))
+    (setf (pressure p_in_rez)	  (h-div-lst
+				   (* 1e6 (pressure p_out))
+				   (pressure p_out)
+				   #'(lambda(pr_in f M p_in_rez p_out g)
+				       (setf (pressure p_in_rez) pr_in )
+				       (- (mass-flow-rate f p_in p_out g) M))
+				   0
+				   (list nil f MFR p_in  p_out g)))
+    p_in_rez))
