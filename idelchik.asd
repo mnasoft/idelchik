@@ -4,7 +4,7 @@
   :description "Describe idelchik here"
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
-  :depends-on (#:varghaftik)
+  :depends-on (#:varghaftik #:areas #:half-div)
   :serial t
   :components ((:file "package")
                (:file "idelchik")
