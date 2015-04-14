@@ -116,7 +116,7 @@ D0[m] - диаметр отвода "
 (defun Idl-6-2-λk(R0 D0 Re)
   (let ( 
 	(D0_2_R0 (/ D0 2 R0))
-	(Re_R0_D0 (* Re (sqrt D0_2_R0)))
+	(Re_R0_D0 (* Re (sqrt (/ D0 2 R0))))
 	)
     (cond
       ((< Re_R0_D0 50) 0.0)
