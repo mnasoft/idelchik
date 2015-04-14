@@ -5,6 +5,8 @@
 (defparameter part_1_doc
   "Общие сведения и элементы аэродинамики и гидравлики напорных систем")
 
+(defgeneric G-1-80_81(Area param_in param_out gas))
+
 (defmethod G-1-80_81((Area number)
 		     (p_in  parametrised)
 		     (p_out parametrised)
@@ -51,6 +53,8 @@
        (values G_kr "кг/с" "Массовый расход сверхкритическая область"
 	       (format nil "(p_out/in=~S)<(p_out/in_kr~S) G=~S" p_out/in p_out/in_kr G))))))
 
+(defgeneric Area-1-80_81(Mass-flow-rate p_in p_out gas))
+  
 (defmethod Area-1-80_81((Mass-flow-rate number)
 			(p_in  parametrised)
 			(p_out parametrised)
@@ -95,6 +99,8 @@
       ((< p_out/in p_out/in_kr)
        (values Area_kr "м2" "Площадь (сверхкритическая область)"
 	       (format nil "(p_out/in=~S)<(p_out/in_kr~S) Area=~S" p_out/in p_out/in_kr Area))))))
+
+(defgeneric mass-flow-rate (forsunka p_in p_out gas))
 
 (defmethod mass-flow-rate((f forsunka) (p_in  parametrised) (p_out parametrised) (g gas))
   "Массовый расход через насадок
