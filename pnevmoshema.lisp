@@ -2,6 +2,7 @@
 
 (in-package #:idelchik)
 
+(defgeneric out (rib))
 (defmethod out ((x rib))
   (format T "~A->~A;~%" (rib-v1 x) (rib-v2 x)))
 
