@@ -59,7 +59,7 @@
 (defun Idl-6-1-1-B1 (x)
   (table_aproximate x Idl-6-1-1-B1-data))
 
-(defun Idl-6-1-1-C1 (x) 1.0)
+(defun Idl-6-1-1-C1 (&optional (x 1.0)) x)
 
 (defun Idl-6-1-1-ζm-277(delta_gradus R0_D0  &key (a0_b0 1.0))
   (*
