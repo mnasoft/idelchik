@@ -11,14 +11,14 @@
 	 :documentation "Имя"))
   (:documentation "Представляет поименованый объект."))
 
-(defmethod print-object :before ((x named)(s stream)) (format s "#named" ))
-(defmethod print-object         ((x named)(s stream)) (format s "(name=~S)" (name x)))
+(defmethod print-object :before ((x named)s) (format s "#named" ))
+(defmethod print-object         ((x named)s) (format s "(name=~S)" (name x)))
 
 (defclass gas (named)
   ()
   (:documentation "В параметре name задается наименование газа."))
 
-(defmethod print-object :before ((x gas)(s stream)) (format s "#gas" ))
+(defmethod print-object :before ((x gas)s) (format s "#gas" ))
 
 
 (defclass parametrised (named)
@@ -28,15 +28,15 @@
 	       :documentation "Абсолютная местная температура потока [К]"))
   (:documentation "Представляет параметры потока в данном месте сети."))
 
-(defmethod print-object :before ((x parametrised)(s stream)) (format s "#parametrised"))
-(defmethod print-object ((x parametrised)(s stream))
+(defmethod print-object :before ((x parametrised)s) (format s "#parametrised"))
+(defmethod print-object ((x parametrised)s)
   (format s "(P=~S[Па] T=~S[К] name=~S)" (pressure x) (tempreche x) (name x)))
 
 (defclass vertex (parametrised)
   ()
   (:documentation "Представляет вершину графа."))
-(defmethod print-object :before ((x vertex)(s stream)) (format s "#vertex"))
-(defmethod print-object         ((x vertex)(s stream)) 
+(defmethod print-object :before ((x vertex)s) (format s "#vertex"))
+(defmethod print-object         ((x vertex)s) 
   (format s "(pressure=~S tempreche=~S name=~S)"
 	  (pressure x) (tempreche x) (name x)))
 
@@ -47,10 +47,13 @@
        :documentation "Вторая вершина ребра."))
   (:documentation "Ребро графа"))
 
-(defmethod print-object :before ((x rib)(s stream)) (format s "#rib"))
-(defmethod print-object         ((x rib)(s stream)) 
+(defmethod print-object :before ((x rib)s) (format s "#rib"))
+(defmethod print-object         ((x rib)s) 
   (format s "(rib-v1=~S rib-v2=~S name=~S)"
 	  (rib-v1 x) (rib-v2 x) (name x)))
+
+(defgeneric rib-name (rib)
+  )
 
 (defmethod rib-name ((x rib))
     "Выполняет вывод на печать списка рёбер в форме пригодной для вставки в исходный код
@@ -76,8 +79,8 @@
 Положительное значение массового расхода соответствует движению от вершины v1 к вершине v2,
 отрицательное - движению от вершины v2 к вершине v1.")))
 
-(defmethod print-object :before ((x gidro-rib)(s stream)) (format s "#gidro-rib"))
-(defmethod print-object         ((x gidro-rib)(s stream)) 
+(defmethod print-object :before ((x gidro-rib)s) (format s "#gidro-rib"))
+(defmethod print-object         ((x gidro-rib)s) 
   (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S)"
 	  (gidro-rib-mass-flow-rate x) (gidro-rib-area1 x) (gidro-rib-area1 x) (rib-v1 x) (rib-v2 x) (name x)))
 
@@ -94,10 +97,12 @@
 	     :initform '()
 	     :documentation "Список вершин.")))
 
-(defmethod print-object :before ((x element)(s stream)) (format s "#element"))
-(defmethod print-object         ((x element)(s stream)) 
+(defmethod print-object :before ((x element)s) (format s "#element"))
+(defmethod print-object         ((x element)s) 
   (format s "(num=~S vertexes=~S name=~S )"
 	  (num x) (vertexes x) (name x)))
+
+(defgeneric mk-rib (element))
 
 (defmethod mk-rib ((x element))
   "Создаёт список рёбер, основанный на списке вершин элемента."
@@ -115,8 +120,8 @@
    (delta    :accessor delta    :initarg :delta    :initform 20d-6
 	     :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
 
-(defmethod print-object :before ((x truba)(s stream)) (format s "#truba"))
-(defmethod print-object         ((x truba)(s stream)) 
+(defmethod print-object :before ((x truba)s) (format s "#truba"))
+(defmethod print-object         ((x truba)s) 
   (format s "(diameter=~S len=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
@@ -126,8 +131,8 @@
 	     :initform 1.0
 	     :documentation "Диаметр заборника в [м].")))
 
-(defmethod print-object :before ((x zabornik)(s stream)) (format s "#zabornik"))
-(defmethod print-object         ((x zabornik)(s stream)) 
+(defmethod print-object :before ((x zabornik)s) (format s "#zabornik"))
+(defmethod print-object         ((x zabornik)s) 
   (format s "(diameter=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (num x) (vertexes x) (name x)))
 
@@ -135,8 +140,8 @@
   ((gofra_hight :accessor gofra_hight
 		:initarg :gofra_hight
 		:initform 0.0025)))
-(defmethod print-object :before ((x metallorukav)(s stream)) (format s "#metallorukav"))
-(defmethod print-object         ((x metallorukav)(s stream)) 
+(defmethod print-object :before ((x metallorukav)s) (format s "#metallorukav"))
+(defmethod print-object         ((x metallorukav)s) 
   (format s "(gofra_hight=~S diameter=~S len=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (gofra_hight x) (diameter x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
@@ -147,8 +152,8 @@
    (delta      :accessor delta       :initarg  :delta      :initform 20d-6
 	       :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
 
-(defmethod print-object :before ((x perehod)(s stream)) (format s "#perehod"))
-(defmethod print-object         ((x perehod)(s stream)) 
+(defmethod print-object :before ((x perehod)s) (format s "#perehod"))
+(defmethod print-object         ((x perehod)s) 
   (format s "(diameter_1=~S diameter_2=~S len=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (diameter_1 x) (diameter_2 x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
@@ -156,8 +161,8 @@
   ((area :accessor area  :initarg  :area :initform 1.0))
     (:documentation "Представляет форсунку для выдачи газообразного топлива."))
 
-(defmethod print-object :before ((x forsunka)(s stream)) (format s "#forsunka"))
-(defmethod print-object         ((x forsunka)(s stream)) 
+(defmethod print-object :before ((x forsunka)s) (format s "#forsunka"))
+(defmethod print-object         ((x forsunka)s) 
   (format s "(area=~S num=~S vertexes=~S name=~S)"
 	  (area x) (num x) (vertexes x) (name x)))
 
@@ -167,8 +172,8 @@
    (alfa     :accessor alfa     :initarg :alfa     :initform 90.0  :documentation "Угол поворота[градусы].")
    (delta    :accessor delta    :initarg :delta    :initform 20d-6 :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
 
-(defmethod print-object :before ((x ugolnik)(s stream)) (format s "#ugolnik"))
-(defmethod print-object         ((x ugolnik)(s stream)) 
+(defmethod print-object :before ((x ugolnik)s) (format s "#ugolnik"))
+(defmethod print-object         ((x ugolnik)s) 
   (format s "(d=~S r=~S α=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (radius x) (alfa x) (delta x) (num x) (vertexes x) (name x)))
 
@@ -176,8 +181,8 @@
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Диаметр трубы [м].")))
 
-(defmethod print-object :before ((x vyxod)(s stream)) (format s "#vyxod"))
-(defmethod print-object         ((x vyxod)(s stream)) 
+(defmethod print-object :before ((x vyxod)s) (format s "#vyxod"))
+(defmethod print-object         ((x vyxod)s) 
   (format s "(d=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (num x) (vertexes x) (name x)))
 
@@ -185,8 +190,8 @@
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Диаметр трубы [м].")))
 
-(defmethod print-object :before ((x vxod)(s stream)) (format s "#vxod"))
-(defmethod print-object         ((x vxod)(s stream)) 
+(defmethod print-object :before ((x vxod)s) (format s "#vxod"))
+(defmethod print-object         ((x vxod)s) 
   (format s "(diameter=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (num x) (vertexes x) (name x)))
 
@@ -201,8 +206,8 @@
 В его списке вершин последняя вершина - центр тройника;
 первая, вторая и третья вершины соответствуют первому, второму и третьему отводам (подводам) тройника."))
 
-(defmethod print-object :before ((x troynik)(s stream)) (format s "#troynik"))
-(defmethod print-object         ((x troynik)(s stream)) 
+(defmethod print-object :before ((x troynik)s) (format s "#troynik"))
+(defmethod print-object         ((x troynik)s) 
   (format s "(d_1=~S d_2=~S d3=~S α_1=~S α_2=~S α_3=~S num=~S vertexes=~S name=~S)"
 	  (diameter_1 x)(diameter_2 x) (diameter_3 x) (alfa_1 x) (alfa_2 x) (alfa_2 x) (num x) (vertexes x) (name x)))
 
