@@ -157,4 +157,4 @@ _d           - относительная шероховатость    "
 	 (λ   (Idl-2-2-λ_ravnomer Re _d)))
     (values
      (+ (* kRe kΔ ζm) (* 0.0175 delta_gradus λ R0_D0))
-     R0_D0 kRe kΔ ζm λ)))
+     R0_D0 kRe kΔ ζm λ a0 b0)))
