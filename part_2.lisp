@@ -126,10 +126,10 @@
       ((<= aRe (form-2-18 _d))
        (values (Idl-2-2 aRe _d)
 	       (format nil "Re=~A" aRe)
-	       "(Idl-2-2 aRe _d)"))
+	       "(Idl-2-2 aRe _d)" _d_pred))
       (T (values (Idl-2-6-lambda _d)
 		 (format nil "Re=~A" aRe)
-		 "(Idl-2-6-lambda _d)")))))
+		 "(Idl-2-6-lambda _d)" _d_pred)))))
 
 (Idl-2-1-λ_gl 4.010e4)
 (Idl-2-2-λ_ravnomer 4.010e4 0.0009999995)
