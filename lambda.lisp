@@ -5,8 +5,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod Re ((tr truba) (p parametrised) (g gas) (w number))
-  "Возвращает число Рейнольдса для трубы круглого поперечного сечения [1]
+(defgeneric Re (element parameter gas vilosity)
+  (:documentation "Возвращает число Рейнольдса")
+  (:method ((tr truba) (p parametrised) (g gas) (w number))
+    "Возвращает число Рейнольдса для трубы круглого поперечного сечения [1]
 tr - труба;
 p  - параметр;
 g  - газ;
@@ -19,15 +21,12 @@ w  [м/с] (-inf inf) - скорость
      (w 15.0)
      )
   (Re tr1 p1 g1 w))"
-  (values (/ (* (abs w) (diameter tr)) (ν p g))
-	  "[1]"
-	  "Число Рейнольдса для газа"
-	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print tr) w)))
-
-;;;;(defmethod Re ((tr metallorukav) (p parametrised) (g gas) (w number))) - определяется по формулам для трубы.
-
-(defmethod Re ((ug ugolnik) (p parametrised) (g gas) (w number))
-  "Возвращает число Рейнольдса для угольника (отвода) круглого поперечного сечения [1]
+    (values (/ (* (abs w) (diameter tr)) (ν p g))
+	    "[1]"
+	    "Число Рейнольдса для газа"
+	    (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print tr) w)))
+  (:method ((ug ugolnik) (p parametrised) (g gas) (w number))
+    "Возвращает число Рейнольдса для угольника (отвода) круглого поперечного сечения [1]
 ug - угольник;
 p  - параметр;
 g  - газ;
@@ -41,12 +40,11 @@ w  [м/с] (-inf inf) - скорость
      )
   (Re ug1 p1 g1 w))
 "
-  (values (/ (* (abs w) (diameter ug)) (ν p g))
-	  "[1]"
-	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print ug) w)))
-
-(defmethod Re ((pr perehod) (p parametrised) (g gas) (w number))
-  "Возвращает значение числа Рейнольдса для перехода [1]
+    (values (/ (* (abs w) (diameter ug)) (ν p g))
+	    "[1]"
+	    (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print ug) w)))
+  (:method ((pr perehod) (p parametrised) (g gas) (w number))
+    "Возвращает значение числа Рейнольдса для перехода [1]
 ug - переход;
 p  - параметр;
 g  - газ;
@@ -60,37 +58,46 @@ w  [м/с] (-inf inf) - скорость
      )
   (Re pr1 p1 g1 w))
 "
-  (values (/ (* (abs w)
-		(min (diameter_1 pr) (diameter_2 pr)))
-	     (ν p g))
-	  "[1]"
-	  (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print pr) w)))
+    (values (/ (* (abs w)
+		  (min (diameter_1 pr) (diameter_2 pr)))
+	       (ν p g))
+	    "[1]"
+	    (format nil "Число Рейнольдса ~S ~S ~S ~S[м/с]" (print g) (print p) (print pr) w))))
+
+;;;;(defmethod Re ((tr metallorukav) (p parametrised) (g gas) (w number))) - определяется по формулам для трубы.
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod _delta( (tr truba) )
-  (/ (delta tr)(diameter tr)))
+(defgeneric _delta (element)
+  (:documentation "Возвращает относительную шероховатость")
+  (:method ( (tr truba) )
+    (/ (delta tr)(diameter tr)))
+  (:method ( (mr metallorukav) )
+    (/ (max (gofra_hight mr) (delta mr) )
+       (diameter mr)))
+  (:method ( (ug ugolnik) )
+    (/ (delta ug)(diameter ug)))
+  (:method ( (pr perehod))
+    (/ (delta pr) (min (diameter_1 pr) (diameter_2 pr)))))
 
-(defmethod _delta( (mr metallorukav) )
-  (/ (max (gofra_hight mr) (delta mr) )
-     (diameter mr)))
-
-(defmethod _delta( (ug ugolnik) )
-  (/ (delta ug)(diameter ug)))
-
-(defmethod _delta( (pr perehod))
-  (/ (delta pr) (min (diameter_1 pr) (diameter_2 pr))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod λ ((tr truba) (p parametrised) (g gas) (w number))
-  (let* ((aRe (Re tr p g w))
-	 (_d (_delta tr)))
-    (cond
-      ((= _d 0.0) (Idl-2-1-λ_gl aRe))
-      (T (Idl-2-2-λ_ravnomer aRe _d)))))
+(defgeneric λ (element parameter gas vilosity)
+  (:documentation "Возвращает коэффициент трения")
+  (:method ((tr truba) (p parametrised) (g gas) (w number))
+    (let* ((aRe (Re tr p g w))
+	   (_d (_delta tr)))
+      (cond
+	((= _d 0.0) (Idl-2-1-λ_gl aRe))
+	(T (Idl-2-2-λ_ravnomer aRe _d))))))
 
 ;;;;(defmethod λ ((tr metallorukav) (p parametrised) (g gas) (w number)) - определяется по формулам для трубы.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric ζ (element parameter gas vilocity)
+  (:documentation "Возврвщает коэффициент сопротивления")
+  )
 
 (defmethod ζ ((ug ugolnik) (p parametrised) (g gas) (w number))
   (let* ((R0 (radius ug))
@@ -150,27 +157,26 @@ w<0 при течении среды от сечения diameter_1<-diameter_2
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod Δ ((tr truba) (p parametrised) (g gas) (w number))
-    "Пример использования
+(defgeneric Δ (element parameter gas vilocity)
+  (:documentation "Возврвщает потери давления на элементе")
+  (:method ((tr truba) (p parametrised) (g gas) (w number))
+	   "Пример использования
 (let ((p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0))))
   ())
 (Δ tr1 param1 gas1 10.0))
 "
-;    (break "Δ ((tr truba) (p parametrised) (g gas) (w number))")
-    (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
+	   (form-2-2 (λ tr p g w) (len tr) (diameter tr) (ρ p g) w))
+  (:method ((ug ugolnik) (p parametrised) (g gas) (w number))
+	   "Потери давления в угольнике
+(Δ u1 p1 g1 20.0)
+"
+	   (*
+	    (ζ ug p g w) (ρ p g) w w 0.5))
+  (:method ((pr perehod) (p parametrised) (g gas) (w number))
+	   "Потери давления в переходе [1]
+(Δ u1 p1 g1 20.0)
+"
+	   (*
+	    (ζ pr p g w) (ρ p g) w w 0.5)))
 
 ;;;;(defmethod Δ ((tr metallorukav) (p parametrised) (g gas) (w number)) - определяется по формулам для трубы.
-
-(defmethod Δ ((ug ugolnik) (p parametrised) (g gas) (w number))
-    "Потери давления в угольнике
-(Δ u1 p1 g1 20.0)
-"
-    (*
-     (ζ ug p g w) (ρ p g) w w 0.5))
-
-(defmethod Δ ((pr perehod) (p parametrised) (g gas) (w number))
-    "Потери давления в переходе [1]
-(Δ u1 p1 g1 20.0)
-"
-    (*
-     (ζ pr p g w) (ρ p g) w w 0.5))

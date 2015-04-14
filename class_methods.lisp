@@ -2,6 +2,7 @@
 
 (in-package #:idelchik)
 
+(defgeneric μ (gas))
 (defmethod μ ((g gas))
   "Возвращает молекулярную массу газа [kg/mol]
 Пример использования
@@ -9,10 +10,12 @@
   (μ g1))"
   (values (varghaftik:μ :gas_name (name g))"[kg/mol]" "Молекулярная масса газа" (format nil "~S" g)))
 
+(defgeneric k (gas))
 (defmethod k ((g gas))
   "Возвращает показатель адиабаты газа [1]"
   (values (varghaftik:k :gas_name (name g))"[1]" "Показатель адиабаты" (format nil "~S" g)))
 
+(defgeneric ρ (parametrised gas))
 (defmethod ρ ((p parametrised) (g gas))
   "Возвращает плотность газа [kg/m^3]
 Пример использования:
@@ -25,6 +28,7 @@
 	  (format nil "~S" g)
 	  (format nil "~S" p)))
 
+(defgeneric η(parametrised gas))
 (defmethod η((p parametrised) (g gas))
   "Возвращает коэффициент динамической вязкости газа [Pa*s]
 Пример использования:
@@ -38,6 +42,7 @@
 	  (format nil "~S" g)
 	  (format nil "~S" p)))
 
+(defgeneric ν (parametrised gas))
 (defmethod ν ((p parametrised) (g gas))
   "Возвращает коэффициент кинематической вязкости газа [m^2/s]
 Пример использования:
@@ -49,9 +54,3 @@
    (/ (η p g) (ρ p g))
    "[m^2/s]"
    (format nil "Коэффициент кинематической вязкости газа ~S ~S" (format nil "~S" g) (format nil "~S" p))))
-
-
-
-
-
- 
