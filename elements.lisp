@@ -168,6 +168,7 @@
   (let ((lst-ribs nil))
     (mapcar #'(lambda (el)
 		(let ((rrr (mk-rib  el)))
+		  (setf rrr nil)
 		  (setf
 		   lst-ribs
 		   (append (mk-rib  el) lst-ribs))))
