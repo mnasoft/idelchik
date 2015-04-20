@@ -14,7 +14,7 @@ p  - параметр;
 g  - газ;
 w  [м/с] (-inf inf) - скорость
 Пример использования:
-(let 
+(let
     ((p1 (make-instance 'parametrised :pressure 101325. :tempreche (+ 273.0 0.0)))
      (g1 (make-instance 'gas :name \"Воздух\"))
      (tr1 (make-instance 'truba  :name \"T-EE-EF\" :diameter (truba-in-dia 0.010) :length 2.500 :vertexes '(\"EE\" \"EF\")))
