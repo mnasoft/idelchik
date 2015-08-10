@@ -2,13 +2,6 @@
 
 (in-package #:idelchik)
 
-
-(defun line-approximate-list( XX n0 n1 lst)
-  (line-approximate
-   XX
-   (nth n0 lst)
-   (nth n1 lst)))
-
 (defun line-approximate( XX PP0 PP1)
   (multiple-value-bind (x p0 p1)
       (values XX PP0 PP1)
@@ -17,6 +10,12 @@
 	   (- x (first p0))
 	   (- (second p1) (second p0)))
 	  (- (first p1) (first p0))))))
+
+(defun line-approximate-list( XX n0 n1 lst)
+  (line-approximate
+   XX
+   (nth n0 lst)
+   (nth n1 lst)))
 
 (defun table_aproximate (x lst)
   (do ((len (length lst))
