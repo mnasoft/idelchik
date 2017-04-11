@@ -36,3 +36,61 @@
 	  "(Δ  pr1 p1 g1 w-1)" 	  (Δ  pr1 p1 g1 w-1)))
 
 ;;;;(test_01)
+
+
+
+(param_in-by-Mass-flow-rate
+ (make-instance 'forsunka :area 130.8d-6)
+ 662/3600
+ (make-instance 'parametrised  :tempreche 333.0)
+ (make-instance 'parametrised :pressure (* 21.4467 9.8065 10000.0 ))
+ (make-instance 'gas :name "Метан"))
+
+:pressure (+ 100000.0 (* 21.4467 9.8065 10000.0))
+
+
+
+#parametrised#named(P=2.175085.5[Па] T=293.0[К] name="")
+#parametrised#named(P=2175085.5[Па] T=293.0[К] name="")
+
+(defparameter *t-min* 293.0)
+
+(defparameter *t-max* 333.0)
+
+(defparameter *g1-min* 130.8d-6)
+
+(defparameter *g1-max* 144.8d-6)
+
+(defparameter *g2-min* 239.2d-6)
+
+(defparameter *g2-max* 264.4d-6)
+
+(defparameter *g1-min* 52.55d-6)
+
+(defparameter *g1-max* 59.55d-6)
+
+(defparameter *g2-min* 224.8d-6)
+
+(defparameter *g2-max* 247.6d-6)
+
+
+
+(let ((t-in *t-min*)
+      (ar *g2-max*))
+  (mapcar #'(lambda (el)
+	      (* 0.001 0.001
+		 (pressure 
+		  (param_in-by-Mass-flow-rate
+		   (make-instance 'forsunka :area ar)
+		   (/ (first el) 3600.0)
+;;;;		   (/ (second el) 3600.0)
+		   (make-instance 'parametrised  :tempreche t-in)
+		   (make-instance 'parametrised :pressure (* (third el) 9.8065 10000.0 ))
+		   (make-instance 'gas :name "Метан"))
+		  )))
+	  (recoder:transpose '((422.499999	422.499999	422.499999	422.499999	422.499999	422.499999	422.499999	465	270		331.999998	331.999998	331.999998	331.999998	331.999998	331.999998	331.999998	331.999998	290		300	300	300	300	300	300	300	295		279.999999	279.999999	279.999999	279.999999	279.999999	279.999999	279.999999	300		258	258	258	258	258	258	258)
+			       (1602.500001	1327.500001	982.500001	622.500001	622.500001	487.500001	277.500001	0	0		1748.000002	1473.000002	1123.000002	828.000002	828.000002	618.000002	398.000002	158.000002	0		1530	1175	905	905	670	445	200	0		1565.000001	1210.000001	955.000001	955.000001	700.000001	475.000001	225.000001	0		1252	1052	1052	752	522	267	52)
+			       (19.0217	17.2563	14.8798	12.125	11.349	10.3014	8.5845	6.3729	4.3262		18.0614	16.4221	14.1911	12.125	11.349	9.8843	8.2547	6.1498	4.1807		16.1214	13.9583	12.125	11.349	9.7388	8.1383	6.0625	4.1322		15.9468	13.7934	12.125	11.349	9.6418	8.0704	6.014	4.1031		13.386	12.125	11.349	9.4478	7.9152	5.9073	4.0449)))))
+
+(require :recoder)
+
