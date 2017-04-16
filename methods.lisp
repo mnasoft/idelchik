@@ -26,3 +26,22 @@
    (/ (η p g) (ρ p g))
    "[m^2/s]"
    (format nil "Коэффициент кинематической вязкости газа ~S ~S" (format nil "~S" g) (format nil "~S" p))))
+
+(defmethod rib-name ((x rib))
+    "Выполняет вывод на печать списка рёбер в форме пригодной для вставки в исходный код
+Пример исползования:
+(mapcar #'(lambda (el) (rib-name el)) ribs)
+"
+    (format T "(make-instance 'gidro-rib :v1 \"~A\" :v2 \"~A\" :name \"~A-~A\")~%"
+	    (rib-v1 x)
+	    (rib-v2 x)
+	    (rib-v1 x)
+	    (rib-v2 x)))
+
+(defmethod mk-rib ((x element))
+  "Создаёт список рёбер, основанный на списке вершин элемента."
+  (let ((v-lst (vertexes x)))
+    (cond
+      ((= 2 (length v-lst))
+       (list (make-gidro-rib (first v-lst) (second v-lst))))
+      (T nil))))

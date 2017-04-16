@@ -10,8 +10,8 @@
                (:file "idelchik")
 	       (:file "classes")
 	       (:file "generics")	       
-	       (:file "methods" :depends-on ("classes"
-					     "generics"))
+	       (:file "methods" :depends-on ("classes" "generics"))
+       	       (:file "method-out" :depends-on ("classes" "generics"))
 	       (:file "table_aproximate")
 	       (:file "tubes")
 	       (:file "part_1")
@@ -26,8 +26,7 @@
 	       (:file "part_10")
 	       (:file "part_11")
 	       (:file "part_12")
-	       (:file "pnevmoshema")
       	       (:file "lambda")
-	       (:file "elements")
+	       (:file "elements" :depends-on ("classes" "generics" "methods" "method-out"))
       	       (:file "test" :depends-on ("methods"))))
 

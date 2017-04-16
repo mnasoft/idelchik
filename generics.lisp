@@ -40,3 +40,13 @@
      (g1 (make-instance 'gas :name \"Воздух\")))
   (ν p1 g1))"))
 
+(defgeneric out (rib)
+  (:documentation "Выполняет вывод объекта на печать"))
+
+(defgeneric rib-name (rib)
+  (:documentation "Выполняет вывод на печать списка рёбер в форме пригодной для вставки в исходный код
+Пример исползования:
+(mapcar #'(lambda (el) (rib-name el)) ribs)"))
+
+(defgeneric mk-rib (element)
+  (:documentation "Создаёт список рёбер, основанный на списке вершин элемента."))

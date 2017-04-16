@@ -1,8 +1,7 @@
-;;;; pnevmoshema.lisp
+;;;; method-out.lisp
 
 (in-package #:idelchik)
 
-(defgeneric out (rib))
 (defmethod out ((x rib))
   (format T "~A->~A;~%" (rib-v1 x) (rib-v2 x)))
 
@@ -15,9 +14,7 @@
 	  (diameter x)
 	  (len x)
 	  (nth 0 (vertexes x))
-	  (nth 1 (vertexes x))
-	  ))
-
+	  (nth 1 (vertexes x))))
 
 (defmethod out ((x ugolnik))
   (format T "name=\"~A\"~%" (named-name x))

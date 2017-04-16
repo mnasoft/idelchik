@@ -2,7 +2,6 @@
 
 (defpackage #:idelchik
   (:use #:cl #:half-div #:areas) 
-  ;;(:use #:half-div)
   ;;(:import-from)
   (:export part_1_doc)
   (:export part_2_doc)
@@ -16,38 +15,16 @@
   (:export part_10_doc)
   (:export part_11_doc)
   (:export part_12_doc)
-  (:export forsunka)
+  (:export named gas parametrised vertex rib gidro-rib  element truba zabornik  metallorukav  perehod
+	   forsunka  ugolnik vyxod vxod  troynik  teploobmennik  resiver  kompressor  valve  valve-obr)
   (:export μ ;; - Возвращает молекулярную массу газа
 	   k ;; - Возвращает коэффициент адиабаты газа
 	   ρ ;; - Возвращает плоотность газа
 	   η ;; - Возвращает коэффициент динамической вязкости газа
 	   ν ;; - Возвращает коэффициент кинематической вязкости газа
 	   )
-  (:export named
-	   )
-  (:export gas
-	   parametrised pressure tempreche
-	   )
-  (:export vertex
-	   rib
-	   )
-  (:export gidro-rib
-	   element
-	   truba
-	   zabornik
-	   metallorukav
-	   perehod
-	   forsunka
-	   ugolnik
-	   vyxod
-	   vxod
-	   troynik
-	   teploobmennik
-	   resiver
-	   kompressor
-	   valve
-	   valve-obr
-	   )
+
+  (:export pressure tempreche)
   (:export table_aproximate ;; - аппроксимация табличных значений
 	   ) 
   )

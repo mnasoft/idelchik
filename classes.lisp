@@ -52,22 +52,8 @@
   (format s "(rib-v1=~S rib-v2=~S name=~S)"
 	  (rib-v1 x) (rib-v2 x) (name x)))
 
-(defgeneric rib-name (rib)
-  )
 
-(defmethod rib-name ((x rib))
-    "Выполняет вывод на печать списка рёбер в форме пригодной для вставки в исходный код
-Пример исползования:
-(mapcar #'(lambda (el) (rib-name el)) ribs)
-"
-    (format T "(make-instance 'gidro-rib :v1 \"~A\" :v2 \"~A\" :name \"~A-~A\")~%"
-	    (rib-v1 x)
-	    (rib-v2 x)
-	    (rib-v1 x)
-	    (rib-v2 x)))
 
-(defun make-rib-name (v1 v2)
-  (concatenate 'string  v1 "-" v2))
 
 (defclass gidro-rib (rib)
   ((area1 :accessor gidro-rib-area1 :initarg :area1 :initform 1.0
@@ -84,8 +70,7 @@
   (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S)"
 	  (gidro-rib-mass-flow-rate x) (gidro-rib-area1 x) (gidro-rib-area1 x) (rib-v1 x) (rib-v2 x) (name x)))
 
-(defun make-gidro-rib (v1 v2)
-  (make-instance 'gidro-rib :v1 v1 :v2 v2 :name (make-rib-name v1 v2)))
+
 
 (defclass element (named)
   ((num  :accessor num
@@ -102,15 +87,7 @@
   (format s "(num=~S vertexes=~S name=~S )"
 	  (num x) (vertexes x) (name x)))
 
-(defgeneric mk-rib (element))
 
-(defmethod mk-rib ((x element))
-  "Создаёт список рёбер, основанный на списке вершин элемента."
-  (let ((v-lst (vertexes x)))
-    (cond
-      ((= 2 (length v-lst))
-       (list (make-gidro-rib (first v-lst) (second v-lst))))
-      (T nil))))
 
 (defclass truba (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
@@ -243,3 +220,10 @@
 (defclass valve-obr (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Условный диаметр [м].")))
+
+
+(defun make-rib-name (v1 v2)
+  (concatenate 'string  v1 "-" v2))
+
+(defun make-gidro-rib (v1 v2)
+  (make-instance 'gidro-rib :v1 v1 :v2 v2 :name (make-rib-name v1 v2)))
