@@ -2,7 +2,7 @@
 
 (in-package #:idelchik)
 
-(defparameter part_3_doc
+(defparameter *part_03_doc*
   "Сопротивление при теченни на входе в трубы и каналы
   (коэффициенты сопротивления входных участков)")
 

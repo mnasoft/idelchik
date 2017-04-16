@@ -2,7 +2,7 @@
 
 (in-package #:idelchik)
 
-(defparameter part_12_doc
+(defparameter *part_12_doc*
   "Сопротивление при течеиии через различные аппараты 
    (коэффициенты сопротивления аппаратов и дрyrих устройств)")
 
