@@ -9,12 +9,16 @@
   (:export named gas parametrised vertex rib gidro-rib  element truba zabornik  metallorukav  perehod
 	   forsunka  ugolnik vyxod vxod  troynik  teploobmennik  resiver  kompressor  valve  valve-obr)
   (:export make-rib-name make-gidro-rib)
+  (:export forsunka-area)
 
-  (:export μ ;; - Возвращает молекулярную массу газа
-	   k ;; - Возвращает коэффициент адиабаты газа
-	   ρ ;; - Возвращает плоотность газа
-	   η ;; - Возвращает коэффициент динамической вязкости газа
-	   ν ;; - Возвращает коэффициент кинематической вязкости газа
+  (:export μ   ; - Возвращает молекулярную массу газа
+	   k   ; - Возвращает коэффициент адиабаты газа
+	   ρ   ; - Возвращает плоотность газа
+	   η   ; - Возвращает коэффициент динамической вязкости газа
+	   ν   ; - Возвращает коэффициент кинематической вязкости газа
+	   mass-flow-rate	; - массовый расход газа через насадок
+	   area-by-Mass-flow-rate ; - площадь насадка по массовому расходу
+	   param_in-by-Mass-flow-rate	; - давление перед насадком
 	   )
 
   (:export pressure tempreche)

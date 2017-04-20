@@ -100,11 +100,8 @@
        (values Area_kr "м2" "Площадь (сверхкритическая область)"
 	       (format nil "(p_out/in=~S)<(p_out/in_kr~S) Area=~S" p_out/in p_out/in_kr Area))))))
 
-(defgeneric mass-flow-rate (forsunka p_in p_out gas))
-
 (defmethod mass-flow-rate((f forsunka) (p_in  parametrised) (p_out parametrised) (g gas))
-  "Массовый расход через насадок
-Пример использования:
+  "Пример использования:
 (mass-flow-rate
  (make-instance 'forsunka :area 27d-6 :name \"Форсунка\")
  (make-instance 'parametrised :pressure (+ 100000.0 101325.) :name \"Параметры на входе\")
@@ -115,14 +112,7 @@
   (G-1-80_81 (area f) p_in p_out g))
 
 (defmethod area-by-Mass-flow-rate((f forsunka) (Mass-flow-rate number) (p_in  parametrised) (p_out parametrised) (g gas))
-  "Определят и устанавливает площадь для форсунки f такую,
-чтобы через нее проходил 
-массовый расход Mass-flow-rate [кг/с]
-газа g 
-при пререпаде на форсунке определяемом давлениями из параметров 
-p_in и p_out
-при температуре на входе (из параметра p_in).
-Пример использования:
+    "Пример использования:
 (area-by-Mass-flow-rate
  (make-instance 'forsunka)
  0.014284128
@@ -130,24 +120,15 @@ p_in и p_out
  (make-instance 'parametrised :tempreche 288.15 :pressure 1.06e5)
  (make-instance 'gas :name \"Воздух\"))
 "
-  (setf (area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
+  (setf (forsunka-area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
   f)
 
 (defmethod param_in-by-Mass-flow-rate((f forsunka)
-				       (MFR number)
-				       (p_in  parametrised)
-				       (p_out parametrised)
-				       (g gas))
-  "Вычисляет давление параметра p_in при котором 
-через форсунку f пройдет массовый расход MFR газа gas 
-при давлении на выходе, определяемом параметром p_out.
-Аргументы:
-f     - форсунка, определяет площадь;
-MFR   - массовый расход, кг/с;
-p_in  - определяет температуру перед форсункой;
-p_out - определяет давление за форсункой;
-g     - газ, протекающий через отверстия форсунки.
-Пример использования:
+				      (MFR number)
+				      (p_in  parametrised)
+				      (p_out parametrised)
+				      (g gas))
+    "Пример использования:
 (param_in-by-Mass-flow-rate
  (make-instance 'forsunka :area 27d-6)
  0.013291542221359807d0

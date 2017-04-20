@@ -11,14 +11,17 @@
 	 :documentation "Имя"))
   (:documentation "Представляет поименованый объект."))
 
-(defmethod print-object :before ((x named)s) (format s "#named" ))
-(defmethod print-object         ((x named)s) (format s "(name=~S)" (name x)))
+(defmethod print-object :before ((x named)s) (format s " #named(~S" (name x)))
+(defmethod print-object         ((x named)s) (format s "" ))
+(defmethod print-object :after  ((x named)s) (format s ")" ))
 
 (defclass gas (named)
   ()
   (:documentation "В параметре name задается наименование газа."))
 
-(defmethod print-object :before ((x gas)s) (format s "#gas" ))
+(defmethod print-object :before ((x gas)s) (format s " #gas(" ))
+(defmethod print-object         ((x gas)s) (format s "" ))
+(defmethod print-object :after  ((x gas)s) (format s ")" ))
 
 
 (defclass parametrised (named)
@@ -28,9 +31,9 @@
 	       :documentation "Абсолютная местная температура потока [К]"))
   (:documentation "Представляет параметры потока в данном месте сети."))
 
-(defmethod print-object :before ((x parametrised)s) (format s "#parametrised"))
-(defmethod print-object ((x parametrised)s)
-  (format s "(P=~S[Па] T=~S[К] name=~S)" (pressure x) (tempreche x) (name x)))
+(defmethod print-object :before ((x parametrised)s) (format s " #parametrised( ~S[Па] ~S[К]" (pressure x) (tempreche x)))
+(defmethod print-object         ((x parametrised)s) (format s ""))
+(defmethod print-object :after  ((x parametrised)s) (format s ")"))
 
 (defclass vertex (parametrised)
   ()
@@ -135,7 +138,7 @@
 	  (diameter_1 x) (diameter_2 x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
 (defclass forsunka (element)
-  ((area :accessor area  :initarg  :area :initform 1.0))
+  ((area :accessor forsunka-area  :initarg  :area :initform 1.0))
     (:documentation "Представляет форсунку для выдачи газообразного топлива."))
 
 (defmethod print-object :before ((x forsunka)s) (format s "#forsunka"))
