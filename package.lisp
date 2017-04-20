@@ -23,6 +23,7 @@
 
   (:export pressure tempreche)
   (:export table_aproximate ;; - аппроксимация табличных значений
+	   param_in-by-mass-flow-rate
 	   ) 
   )
 
