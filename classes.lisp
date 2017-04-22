@@ -138,13 +138,13 @@
 	  (diameter_1 x) (diameter_2 x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
 (defclass forsunka (element)
-  ((area :accessor area  :initarg  :area :initform 1.0))
+  ((area :accessor forsunka-area  :initarg  :area :initform 1.0))
   (:documentation "Представляет форсунку для выдачи газообразного топлива."))
 
 (defmethod print-object :before ((x forsunka)s) (format s "#forsunka"))
 (defmethod print-object         ((x forsunka)s) 
   (format s "(area=~S num=~S vertexes=~S name=~S)"
-	  (area x) (num x) (vertexes x) (name x)))
+	  (forsunka-area x) (num x) (vertexes x) (name x)))
 
 (defclass ugolnik (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0   :documentation "Диаметр трубы [м].")

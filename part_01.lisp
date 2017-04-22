@@ -109,7 +109,7 @@
  (make-instance 'gas :name \"Воздух\"))
 =>0.013291542221359807d0
 "
-  (G-1-80_81 (area f) p_in p_out g))
+  (G-1-80_81 (forsunka-area f) p_in p_out g))
 
 (defmethod area-by-Mass-flow-rate((f forsunka) (Mass-flow-rate number) (p_in  parametrised) (p_out parametrised) (g gas))
     "Пример использования:
@@ -120,7 +120,7 @@
  (make-instance 'parametrised :tempreche 288.15 :pressure 1.06e5)
  (make-instance 'gas :name \"Воздух\"))
 "
-  (setf (area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
+  (setf (forsunka-area f)(Area-1-80_81 Mass-flow-rate p_in p_out g))
   f)
 
 (defmethod param_in-by-Mass-flow-rate((f forsunka)
