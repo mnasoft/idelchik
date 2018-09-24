@@ -1,9 +1,9 @@
 ;;;; idelchik.asd
 
-(asdf:defsystem #:idelchik
+(defsystem #:idelchik
   :description "Describe idelchik here"
-  :author "Your Name <your.name@example.com>"
-  :license "Specify license here"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on (#:varghaftik #:areas #:half-div)
   :serial t
   :components ((:file "package")
