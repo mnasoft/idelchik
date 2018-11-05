@@ -11,9 +11,9 @@
 	 :documentation "Имя"))
   (:documentation "Представляет поименованый объект."))
 
-(defmethod print-object :before ((x named)s) (format s " #named(~S" (name x)))
-(defmethod print-object         ((x named)s) (format s "" ))
-(defmethod print-object :after  ((x named)s) (format s ")" ))
+(defmethod print-object :before ((x named) s) (format s ""))
+(defmethod print-object         ((x named) s) (format s "~A" (name x)))
+(defmethod print-object :after  ((x named) s) (format s ""))
 
 (defclass gas (named)
   ()
