@@ -101,13 +101,14 @@
 	       (format nil "(p_out/in=~S)<(p_out/in_kr~S) Area=~S" p_out/in p_out/in_kr Area))))))
 
 (defmethod mass-flow-rate((f forsunka) (p_in  parametrised) (p_out parametrised) (g gas))
-  "Пример использования:
-(mass-flow-rate
- (make-instance 'forsunka :area 27d-6 :name \"Форсунка\")
- (make-instance 'parametrised :pressure (+ 100000.0 101325.) :name \"Параметры на входе\")
- (make-instance 'parametrised :name \"Параметры на выходе\")
- (make-instance 'gas :name \"Воздух\"))
-=>0.013291542221359807d0
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (mass-flow-rate
+   (make-instance 'forsunka :area 27d-6 :name \"Форсунка\")
+   (make-instance 'parametrised :pressure (+ 100000.0 101325.) :name \"Параметры на входе\")
+   (make-instance 'parametrised :name \"Параметры на выходе\")
+   (make-instance 'gas :name \"Воздух\")) =>0.013291542221359807d0
+@end(code)
 "
   (G-1-80_81 (forsunka-area f) p_in p_out g))
 
