@@ -15,6 +15,8 @@
 (defmethod print-object         ((x named) s) (format s "~A" (name x)))
 (defmethod print-object :after  ((x named) s) (format s ""))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass gas (named)
   ()
   (:documentation "В параметре name задается наименование газа."))
@@ -23,6 +25,7 @@
 (defmethod print-object         ((x gas)s) (format s "" ))
 (defmethod print-object :after  ((x gas)s) (format s ")" ))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass parametrised (named)
   ((pressure   :accessor pressure    :initarg :pressure  :initform 101325.0
@@ -35,6 +38,8 @@
 (defmethod print-object         ((x parametrised)s) (format s ""))
 (defmethod print-object :after  ((x parametrised)s) (format s ")"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass vertex (parametrised)
   ()
   (:documentation "Представляет вершину графа."))
@@ -42,6 +47,8 @@
 (defmethod print-object         ((x vertex)s) 
   (format s "(pressure=~S tempreche=~S name=~S)"
 	  (pressure x) (tempreche x) (name x)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass rib (named)
   ((v1 :accessor rib-v1 :initarg :v1 :initform "A"
@@ -55,8 +62,7 @@
   (format s "(rib-v1=~S rib-v2=~S name=~S)"
 	  (rib-v1 x) (rib-v2 x) (name x)))
 
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass gidro-rib (rib)
   ((area1 :accessor gidro-rib-area1 :initarg :area1 :initform 1.0
@@ -137,14 +143,28 @@
   (format s "(diameter_1=~S diameter_2=~S len=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (diameter_1 x) (diameter_2 x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export 'forsunka)
+(export 'forsunka-area)
+
 (defclass forsunka (element)
   ((area :accessor forsunka-area  :initarg  :area :initform 1.0))
-  (:documentation "Представляет форсунку для выдачи газообразного топлива."))
+  (:documentation "@b(Описание:) класс @b(forsunka) представляет 
+форсунку, предназначенную для подачи газообразного топлива."))
 
 (defmethod print-object :before ((x forsunka)s) (format s "#forsunka"))
 (defmethod print-object         ((x forsunka)s) 
   (format s "(area=~S num=~S vertexes=~S name=~S)"
 	  (forsunka-area x) (num x) (vertexes x) (name x)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export 'ugolnik)
+(export 'diameter)
+(export 'radius)
+(export 'alfa)
+(export 'delta)
 
 (defclass ugolnik (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0   :documentation "Диаметр трубы [м].")
@@ -157,6 +177,11 @@
   (format s "(d=~S r=~S α=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (radius x) (alfa x) (delta x) (num x) (vertexes x) (name x)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export 'vyxod)
+(export 'diameter)
+
 (defclass vyxod (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Диаметр трубы [м].")))
@@ -166,6 +191,8 @@
   (format s "(d=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (num x) (vertexes x) (name x)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass vxod (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Диаметр трубы [м].")))
@@ -174,6 +201,16 @@
 (defmethod print-object         ((x vxod)s) 
   (format s "(diameter=~S num=~S vertexes=~S name=~S)"
 	  (diameter x) (num x) (vertexes x) (name x)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export 'troynik)
+(export 'diameter_1)
+(export 'diameter_2)
+(export 'diameter_3)
+(export 'alfa_1)
+(export 'alfa_2)
+(export 'alfa_3)
 
 (defclass troynik (element)
   ((diameter_1    :accessor diameter_1 :initarg  :diameter_1 :initform 1.0)
@@ -207,23 +244,34 @@
 	(make-gidro-rib v3 vc)))
       (T nil))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass teploobmennik(element)
   ())
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass resiver(element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Диаметр трубы подвода и отвода [м].")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass kompressor(element)
   ())
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass valve (element)
   ())
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass valve-obr (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
 	     :documentation "Условный диаметр [м].")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-rib-name (v1 v2)
   (concatenate 'string  v1 "-" v2))

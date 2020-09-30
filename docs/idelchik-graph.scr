@@ -1,0 +1,8 @@
+ @begin(section) @title(Графы idelchik)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph-idelchik.gv.png]())
+   @item(call-graph   @image[src=./call-graph-idelchik.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph-idelchik.gv.png]())
+   @item(class-graph  @image[src=./class-graph-idelchik.gv.png]())
+  @end(list)
+ @end(section)
