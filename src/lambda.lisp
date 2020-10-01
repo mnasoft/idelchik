@@ -49,14 +49,16 @@ ug - переход;
 p  - параметр;
 g  - газ;
 w  [м/с] (-inf inf) - скорость
-Пример использования:
-(let 
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let 
     ((p1 (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 400.0)))
      (g1 (make-instance 'gas :name \"Воздух\"))
      (pr1 (make-instance 'perehod :name \"P1\" :diameter_1 (ugolnik-in-dia 0.053) :diameter_2 (ugolnik-in-dia 0.075) :len 0.050 :vertexes '(\"AL\" \"AM\")))
      (w 15.0)
      )
   (Re pr1 p1 g1 w))
+@end(code)
 "
     (values (/ (* (abs w)
 		  (min (diameter_1 pr) (diameter_2 pr)))

@@ -3,7 +3,10 @@
 (in-package #:idelchik)
 
 (defparameter *part_01_doc*
+  "Часть 1"
   "Общие сведения и элементы аэродинамики и гидравлики напорных систем")
+
+;;;; (documentation '*part_01_doc* 'variable)
 
 (defgeneric G-1-80_81(Area param_in param_out gas))
 

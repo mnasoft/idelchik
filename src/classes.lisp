@@ -72,7 +72,8 @@
    (mass-flow-rate  :accessor gidro-rib-mass-flow-rate :initarg :v1 :initform 1.0
        :documentation "Массовый расход среды, через проходящий через ребро. 
 Положительное значение массового расхода соответствует движению от вершины v1 к вершине v2,
-отрицательное - движению от вершины v2 к вершине v1.")))
+отрицательное - движению от вершины v2 к вершине v1."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x gidro-rib)s) (format s "#gidro-rib"))
 (defmethod print-object         ((x gidro-rib)s) 
@@ -89,7 +90,8 @@
    (vertexes :accessor vertexes
 	     :initarg :vertexes
 	     :initform '()
-	     :documentation "Список вершин.")))
+	     :documentation "Список вершин."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x element)s) (format s "#element"))
 (defmethod print-object         ((x element)s) 
@@ -104,7 +106,8 @@
    (len      :accessor len   :initarg :length   :initform 1.0
 	     :documentation "Длина  трубы  [м]." )
    (delta    :accessor delta    :initarg :delta    :initform 20d-6
-	     :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
+	     :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x truba)s) (format s "#truba"))
 (defmethod print-object         ((x truba)s) 
@@ -115,7 +118,8 @@
   ((diameter :accessor diameter
 	     :initarg :diameter
 	     :initform 1.0
-	     :documentation "Диаметр заборника в [м].")))
+	     :documentation "Диаметр заборника в [м]."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x zabornik)s) (format s "#zabornik"))
 (defmethod print-object         ((x zabornik)s) 
@@ -125,18 +129,25 @@
 (defclass metallorukav (truba)
   ((gofra_hight :accessor gofra_hight
 		:initarg :gofra_hight
-		:initform 0.0025)))
+		:initform 0.0025
+                :documentation "STUB"))
+  (:documentation "STUB"))
+
 (defmethod print-object :before ((x metallorukav)s) (format s "#metallorukav"))
 (defmethod print-object         ((x metallorukav)s) 
   (format s "(gofra_hight=~S diameter=~S len=~S delta=~S num=~S vertexes=~S name=~S)"
 	  (gofra_hight x) (diameter x) (len x) (delta x) (num x) (vertexes x) (name x)))
 
 (defclass perehod (element)
-  ((diameter_1 :accessor diameter_1  :initarg  :diameter_1 :initform 1.0)
-   (diameter_2 :accessor diameter_2  :initarg  :diameter_2 :initform 1.0)
-   (len        :accessor len         :initarg  :len        :initform 1.0)
-   (delta      :accessor delta       :initarg  :delta      :initform 20d-6
-	       :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
+  ((diameter_1 :accessor diameter_1  :initarg  :diameter_1 :initform 1.0
+               :documentation "STUB")
+   (diameter_2 :accessor diameter_2  :initarg  :diameter_2 :initform 1.0
+               :documentation "STUB")
+   (len        :accessor len         :initarg  :len        :initform 1.0
+               :documentation "STUB")
+   (delta      :accessor delta       :initarg  :delta      :initform 20d-6 
+	       :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x perehod)s) (format s "#perehod"))
 (defmethod print-object         ((x perehod)s) 
@@ -149,7 +160,7 @@
 (export 'forsunka-area)
 
 (defclass forsunka (element)
-  ((area :accessor forsunka-area  :initarg  :area :initform 1.0))
+  ((area :accessor forsunka-area  :initarg  :area :initform 1.0 :documentation "STUB"))
   (:documentation "@b(Описание:) класс @b(forsunka) представляет 
 форсунку, предназначенную для подачи газообразного топлива."))
 
@@ -170,7 +181,8 @@
   ((diameter :accessor diameter :initarg :diameter :initform 1.0   :documentation "Диаметр трубы [м].")
    (radius   :accessor radius   :initarg :radius   :initform 1.0   :documentation "Радиус поворота по центрам угольника[м].")
    (alfa     :accessor alfa     :initarg :alfa     :initform 90.0  :documentation "Угол поворота[градусы].")
-   (delta    :accessor delta    :initarg :delta    :initform 20d-6 :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra.")))
+   (delta    :accessor delta    :initarg :delta    :initform 20d-6 :documentation "Абсолютная высота микронеровностей [м]. Δ=4*Ra."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x ugolnik)s) (format s "#ugolnik"))
 (defmethod print-object         ((x ugolnik)s) 
@@ -184,7 +196,8 @@
 
 (defclass vyxod (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
-	     :documentation "Диаметр трубы [м].")))
+	     :documentation "Диаметр трубы [м]."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x vyxod)s) (format s "#vyxod"))
 (defmethod print-object         ((x vyxod)s) 
@@ -195,7 +208,8 @@
 
 (defclass vxod (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
-	     :documentation "Диаметр трубы [м].")))
+	     :documentation "Диаметр трубы [м]."))
+  (:documentation "STUB"))
 
 (defmethod print-object :before ((x vxod)s) (format s "#vxod"))
 (defmethod print-object         ((x vxod)s) 
@@ -213,12 +227,12 @@
 (export 'alfa_3)
 
 (defclass troynik (element)
-  ((diameter_1    :accessor diameter_1 :initarg  :diameter_1 :initform 1.0)
-   (alfa_1        :accessor alfa_1     :initarg  :alfa_1     :initform 180.0)
-   (diameter_2    :accessor diameter_2 :initarg  :diameter_2 :initform 1.0)
-   (alfa_2        :accessor alfa_2     :initarg  :alfa_2     :initform 0.0)
-   (diameter_3    :accessor diameter_3 :initarg  :diameter_3 :initform 1.0)
-   (alfa_3        :accessor alfa_3     :initarg  :alfa_3     :initform 90.0))
+  ((diameter_1    :accessor diameter_1 :initarg  :diameter_1 :initform 1.0   :documentation "STUB")
+   (alfa_1        :accessor alfa_1     :initarg  :alfa_1     :initform 180.0 :documentation "STUB")
+   (diameter_2    :accessor diameter_2 :initarg  :diameter_2 :initform 1.0   :documentation "STUB")
+   (alfa_2        :accessor alfa_2     :initarg  :alfa_2     :initform 0.0   :documentation "STUB")
+   (diameter_3    :accessor diameter_3 :initarg  :diameter_3 :initform 1.0   :documentation "STUB")
+   (alfa_3        :accessor alfa_3     :initarg  :alfa_3     :initform 90.0  :documentation "STUB"))
   (:documentation "Представляет тройник. 
 В его списке вершин последняя вершина - центр тройника;
 первая, вторая и третья вершины соответствуют первому, второму и третьему отводам (подводам) тройника."))
@@ -247,34 +261,41 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass teploobmennik(element)
-  ())
+  ()
+  (:documentation "STUB"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass resiver(element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
-	     :documentation "Диаметр трубы подвода и отвода [м].")))
+	     :documentation "Диаметр трубы подвода и отвода [м]."))
+  (:documentation "Диаметр трубы подвода и отвода [м]."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass kompressor(element)
-  ())
+  ()
+  (:documentation "STUB"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass valve (element)
-  ())
+  ()
+  (:documentation "STUB"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass valve-obr (element)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0
-	     :documentation "Условный диаметр [м].")))
+	     :documentation "Условный диаметр [м]."))
+  (:documentation "STUB"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-rib-name (v1 v2)
+  "STUB"
   (concatenate 'string  v1 "-" v2))
 
 (defun make-gidro-rib (v1 v2)
+  "STUB"
   (make-instance 'gidro-rib :v1 v1 :v2 v2 :name (make-rib-name v1 v2)))

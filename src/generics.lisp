@@ -83,3 +83,8 @@ gas      - газ, протекающий через отверстия форс
 
 (defgeneric mk-rib (element)
   (:documentation "Создаёт список рёбер, основанный на списке вершин элемента."))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric diameter_1 (element)
+  (:documentation "diameter_1"))

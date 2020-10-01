@@ -3,6 +3,7 @@
 (in-package #:idelchik)
 
 (defun line-approximate( XX PP0 PP1)
+  "STUB"
   (multiple-value-bind (x p0 p1)
       (values XX PP0 PP1)
     (+ (second p0)
@@ -12,12 +13,14 @@
 	  (- (first p1) (first p0))))))
 
 (defun line-approximate-list( XX n0 n1 lst)
+  "STUB"
   (line-approximate
    XX
    (nth n0 lst)
    (nth n1 lst)))
 
 (defun table_aproximate (x lst)
+  "STUB"
   (do ((len (length lst))
        (res nil)
        (i 0 (1+ i))
