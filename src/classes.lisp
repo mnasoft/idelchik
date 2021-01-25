@@ -19,7 +19,26 @@
 
 (defclass gas (named)
   ()
-  (:documentation "В параметре name задается наименование газа."))
+  (:documentation
+   " @b(Описание:) класс @b(gas) представляет газ. Параметр name
+   задает наименование газа.
+ Определены следующие газы
+@begin(list)
+ @item(Воздух)
+ @item(Азот)
+ @item(Кислород)
+ @item(Углекислый газ)
+ @item(Угарный газ)
+ @item(Водород)
+ @item(Аммиак)
+ @item(Оксид серы\(IV\))
+ @item(Гелий)
+ @item(Метан )
+ @item(Газ природный)
+ @item(Газ попутный нефтяной)
+ @item(Газ природный_2010-08-20)
+@end(list)
+"))
 
 (defmethod print-object :before ((x gas)s) (format s " #gas(" ))
 (defmethod print-object         ((x gas)s) (format s "" ))
@@ -32,7 +51,9 @@
 	       :documentation "Абсолютное статическое давление [Па].")
    (tempreche  :accessor tempreche :initarg :tempreche :initform 273.15
 	       :documentation "Абсолютная местная температура потока [К]"))
-  (:documentation "Представляет параметры потока в данном месте сети."))
+  (:documentation
+   " @b(Описание:) класс @b(parametrised) представляет параметры
+   потока в данном месте сети."))
 
 (defmethod print-object :before ((x parametrised)s) (format s " #parametrised( ~S[Па] ~S[К]" (pressure x) (tempreche x)))
 (defmethod print-object         ((x parametrised)s) (format s ""))

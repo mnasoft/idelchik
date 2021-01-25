@@ -171,10 +171,10 @@
 @begin(list)
  @item(f - объект типа forsunka;)
  @item(MFR - массовый расход через форсунку;)
- @item(p_in - объект типа parametrised параметры перед форсункой,
-             (на результат влияет только температура);)
- @item(p_out - объект типа parametrised параметры после форсунки
-             (на результат влияет только давление);)
+ @item(p_in - объект типа parametrised параметры перед форсункой. На
+             результат влияет только температура;)
+@item(p_out - объект типа parametrised параметры после форсунки. На
+             результат влияет только давление;)
  @item(g - объект типа gas, расход которого задан.)
 @end(list)
 
@@ -186,7 +186,7 @@
   (make-instance 'parametrised :pressure (+ 100000.0 101325.))
   (make-instance 'parametrised)
   (make-instance 'gas :name \"Воздух\"))
-=>#parametrised#named(P=201325.0[Па] T=273.15[К] name=\"\"
+   ; =>  #parametrised( 201325.0[Па] 273.15[К])
 @end(code)
 "
   (let ((p_in_rez p_in))

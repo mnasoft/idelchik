@@ -40,4 +40,4 @@
   :description "@b(Описание:) система @b(idelchik/docs) для создания документации."
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :depends-on ("idelchik" "mnas-package"))
+  :depends-on ("idelchik" "mnas-package" "codex"))
