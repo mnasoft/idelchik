@@ -2,27 +2,23 @@
 
 (in-package #:idelchik)
 
-;;; "idelchik" goes here. Hacks and glory await!
-
-(defclass named ()
-  ((name :accessor name
-         :initarg :name
-	 :initform ""
-	 :documentation "Имя"))
+(defclass <named> ()
+  ((name :accessor name :initarg :name :initform "" :documentation "Имя"))
   (:documentation "Представляет поименованый объект."))
 
-(defmethod print-object :before ((x named) s) (format s ""))
-(defmethod print-object         ((x named) s) (format s "~A" (name x)))
-(defmethod print-object :after  ((x named) s) (format s ""))
+(defmethod print-object :before ((x <named>) s) (format s ""))
+(defmethod print-object         ((x <named>) s) (format s "~A" (name x)))
+(defmethod print-object :after  ((x <named>) s) (format s ""))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass gas (named)
+(defclass <gas> (<named>)
   ()
   (:documentation
-   " @b(Описание:) класс @b(gas) представляет газ. Параметр name
+   " @b(Описание:) класс @b(<gas>) представляет газ. Параметр name
    задает наименование газа.
- Определены следующие газы
+
+ Определены следующие газы:
 @begin(list)
  @item(Воздух)
  @item(Азот)
@@ -40,52 +36,52 @@
 @end(list)
 "))
 
-(defmethod print-object :before ((x gas)s) (format s " #gas(" ))
-(defmethod print-object         ((x gas)s) (format s "" ))
-(defmethod print-object :after  ((x gas)s) (format s ")" ))
+(defmethod print-object :before ((x <gas>) s) (format s " #<gas>(" ))
+(defmethod print-object         ((x <gas>) s) (format s "" ))
+(defmethod print-object :after  ((x <gas>) s) (format s ")" ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass parametrised (named)
+(defclass <param> (<named>)
   ((pressure   :accessor pressure    :initarg :pressure  :initform 101325.0
 	       :documentation "Абсолютное статическое давление [Па].")
    (tempreche  :accessor tempreche :initarg :tempreche :initform 273.15
 	       :documentation "Абсолютная местная температура потока [К]"))
   (:documentation
-   " @b(Описание:) класс @b(parametrised) представляет параметры
+   " @b(Описание:) класс @b(<param>) представляет параметры
    потока в данном месте сети."))
 
-(defmethod print-object :before ((x parametrised)s) (format s " #parametrised( ~S[Па] ~S[К]" (pressure x) (tempreche x)))
-(defmethod print-object         ((x parametrised)s) (format s ""))
-(defmethod print-object :after  ((x parametrised)s) (format s ")"))
+(defmethod print-object :before ((x <param>)s) (format s " #<param>( ~S[Па] ~S[К]" (pressure x) (tempreche x)))
+(defmethod print-object         ((x <param>)s) (format s ""))
+(defmethod print-object :after  ((x <param>)s) (format s ")"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass vertex (parametrised)
+(defclass <vertex> (<param>)
   ()
   (:documentation "Представляет вершину графа."))
-(defmethod print-object :before ((x vertex)s) (format s "#vertex"))
-(defmethod print-object         ((x vertex)s) 
+(defmethod print-object :before ((x <vertex>)s) (format s "#<vertex>"))
+(defmethod print-object         ((x <vertex>)s) 
   (format s "(pressure=~S tempreche=~S name=~S)"
 	  (pressure x) (tempreche x) (name x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass rib (named)
-  ((v1 :accessor rib-v1 :initarg :v1 :initform "A"
+(defclass <rib> (<named>)
+  ((v1 :accessor <rib>-v1 :initarg :v1 :initform "A"
        :documentation "Первая вершина ребра.")
-   (v2 :accessor rib-v2 :initarg :v2 :initform "B"
+   (v2 :accessor <rib>-v2 :initarg :v2 :initform "B"
        :documentation "Вторая вершина ребра."))
   (:documentation "Ребро графа"))
 
-(defmethod print-object :before ((x rib)s) (format s "#rib"))
-(defmethod print-object         ((x rib)s) 
-  (format s "(rib-v1=~S rib-v2=~S name=~S)"
-	  (rib-v1 x) (rib-v2 x) (name x)))
+(defmethod print-object :before ((x <rib>)s) (format s "#<rib>"))
+(defmethod print-object         ((x <rib>)s) 
+  (format s "(<rib>-v1=~S <rib>-v2=~S name=~S)"
+	  (<rib>-v1 x) (<rib>-v2 x) (name x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass gidro-rib (rib)
+(defclass gidro-rib (<rib>)
   ((area1 :accessor gidro-rib-area1 :initarg :area1 :initform 1.0
        :documentation "Первая площадь ребра.")
    (area2 :accessor gidro-rib-area2 :initarg :area2 :initform 1.0
@@ -99,11 +95,11 @@
 (defmethod print-object :before ((x gidro-rib)s) (format s "#gidro-rib"))
 (defmethod print-object         ((x gidro-rib)s) 
   (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S)"
-	  (gidro-rib-mass-flow-rate x) (gidro-rib-area1 x) (gidro-rib-area1 x) (rib-v1 x) (rib-v2 x) (name x)))
+	  (gidro-rib-mass-flow-rate x) (gidro-rib-area1 x) (gidro-rib-area1 x) (<rib>-v1 x) (<rib>-v2 x) (name x)))
 
 
 
-(defclass element (named)
+(defclass element (<named>)
   ((num  :accessor num
 	 :initarg :num
 	 :initform 1.0

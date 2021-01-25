@@ -2,8 +2,6 @@
 
 (in-package #:idelchik)
 
-;;; "idelchik" goes here. Hacks and glory await!
-
 "
 И.Е. Идельчик д-р техн. наук nроф.
 СПРАВОЧНИК

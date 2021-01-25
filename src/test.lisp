@@ -2,8 +2,8 @@
 
 (in-package #:idelchik)
 
-(defparameter p1  (make-instance 'parametrised :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
-(defparameter g1  (make-instance 'gas :name "Воздух"))
+(defparameter p1  (make-instance '<param> :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
+(defparameter g1  (make-instance '<gas> :name "Воздух"))
 
 (defparameter tr1 (make-instance 'truba :name "T-EE-EF" :diameter 0.070 :length 2.500 :vertexes '("EE" "EF")))
 (defparameter ug1 (make-instance 'ugolnik :name "T-EE-EF" :diameter 0.070 :radius (ugolnik-radius 0.075) :vertexes '("EE" "EF")))

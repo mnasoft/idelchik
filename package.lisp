@@ -15,11 +15,11 @@
 	   *part_10_doc*
 	   *part_11_doc*
 	   *part_12_doc*)
-  (:export named
-	   gas
-	   parametrised
-	   vertex
-	   rib
+  (:export <named>
+	   <gas>
+	   <param>
+	   <vertex>
+	   <rib>
 	   gidro-rib
 	   element
 	   truba
@@ -47,7 +47,8 @@
 	   diameter_3
            delta
 	   )
-  (:export make-rib-name make-gidro-rib)
+  (:export make-rib-name
+           make-gidro-rib)
   (:export name)
   (:export forsunka-area )
 

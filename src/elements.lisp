@@ -156,7 +156,7 @@
 		       (setf rez-v-es (adjoin el rez-v-es :test #'equal)))
 		   v-es)))
      elements)
-    (mapcar #'(lambda (el) (make-instance 'vertex :name el))
+    (mapcar #'(lambda (el) (make-instance '<vertex> :name el))
 	    (sort rez-v-es #'string<))))
 
 (defparameter vertexes (mk-vert elements)
