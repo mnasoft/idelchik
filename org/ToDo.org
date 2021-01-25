@@ -1,4 +1,5 @@
 * Переименование
- - named -> <named>
- - parametrised -> <param>
- - gas - <gas>
+ - [X] named -> <named>
+ - [X] parametrised -> <param>
+ - [X] gas - <gas>
+ - [X] rib - <rib>
