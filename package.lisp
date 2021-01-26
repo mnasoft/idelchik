@@ -20,22 +20,22 @@
 	   <param>
 	   <vertex>
 	   <rib>
-	   gidro-rib
-	   element
-	   truba
-	   zabornik
-	   metallorukav
-	   perehod
-	   forsunka
-	   ugolnik
-	   vyxod
-	   vxod
+	   <gidro-rib>
+	   <element>
+	   <truba>
+	   <zabornik>
+	   <metallorukav>
+	   <perehod>
+	   <forsunka>
+	   <ugolnik>
+	   <vyxod>
+	   <vxod>
 	   troynik
-	   teploobmennik
-	   resiver
-	   kompressor
-	   valve
-	   valve-obr
+	   <teploobmennik>
+	   <resiver>
+	   <kompressor>
+	   <valve>
+	   <valve-obr>
 	   alfa
 	   alfa_1
 	   alfa_2
@@ -48,9 +48,9 @@
            delta
 	   )
   (:export make-rib-name
-           make-gidro-rib)
+           make-<gidro-rib>)
   (:export name)
-  (:export forsunka-area )
+  (:export <forsunka>-area )
 
   (:export μ   ; - Возвращает молекулярную массу газа
 	   k   ; - Возвращает коэффициент адиабаты газа

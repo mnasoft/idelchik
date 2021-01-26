@@ -103,20 +103,20 @@
        (values Area_kr "м2" "Площадь (сверхкритическая область)"
 	       (format nil "(p-out/in=~S)<(p-out/in_kr~S) Area=~S" p-out/in p-out/in_kr Area))))))
 
-(defmethod mass-flow-rate((f forsunka) (p-in <param>) (p-out <param>) (g <gas>))
+(defmethod mass-flow-rate((f <forsunka>) (p-in <param>) (p-out <param>) (g <gas>))
   "@b(Пример использования:)
 @begin[lang=lisp](code)
  (mass-flow-rate
-   (make-instance 'forsunka :area 27d-6 :name \"Форсунка\")
+   (make-instance '<forsunka> :area 27d-6 :name \"Форсунка\")
    (make-instance '<param> :pressure (+ 100000.0 101325.) :name \"Параметры на входе\")
    (make-instance '<param> :name \"Параметры на выходе\")
    (make-instance '<gas> :name \"Воздух\")) =>0.013291542221359807d0
 @end(code)
 "
-  (G-1-80_81 (forsunka-area f) p-in p-out g))
+  (G-1-80_81 (<forsunka>-area f) p-in p-out g))
 #|
  (mass-flow-rate
-   (make-instance 'idelchik:forsunka :area (* 6.377d-6 8.0) :name "Форсунка")
+   (make-instance 'idelchik:<forsunka> :area (* 6.377d-6 8.0) :name "Форсунка")
    (make-instance 'idelchik:<param> :pressure (+ 100000.0 101325.)
 					 :tempreche 288.15
 					 :name "Параметры на входе")
@@ -126,14 +126,14 @@
  =>0.013291542221359807d0
 |#
 
-(defmethod area-by-Mass-flow-rate((f forsunka) (MFR number) (p-in  <param>) (p-out <param>) (g <gas>))
-  "@b(Описание:) метод @b(area-by-Mass-flow-rate) возвращает объект типа forsunka,
+(defmethod area-by-Mass-flow-rate((f <forsunka>) (MFR number) (p-in  <param>) (p-out <param>) (g <gas>))
+  "@b(Описание:) метод @b(area-by-Mass-flow-rate) возвращает объект типа <forsunka>,
 расход газа @b(g), через которую будет равен @b(MFR) при параметрах на входе p-in и
 параетрах на выходе p-out.
 
  @b(Переменые:)
 @begin(list)
- @item(f - объект типа forsunka;)
+ @item(f - объект типа <forsunka>;)
  @item(MFR - массовый расход через форсунку;)
  @item(p-in - объект типа <param> параметры перед форсункой,
              (на результат влияет только температура);)
@@ -145,31 +145,31 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (area-by-Mass-flow-rate
-  (make-instance 'forsunka)
+  (make-instance '<forsunka>)
   0.014284128
   (make-instance '<param> :tempreche 288.15 :pressure 2e5)
   (make-instance '<param> :tempreche 288.15 :pressure 1.06e5)
   (make-instance '<gas> :name \"Воздух\"))
 @end(code)
 "
-  (setf (forsunka-area f)(Area-1-80_81 MFR p-in p-out g))
+  (setf (<forsunka>-area f)(Area-1-80_81 MFR p-in p-out g))
   f)
 
 #|
- (defparameter *f*     (make-instance 'forsunka))
+ (defparameter *f*     (make-instance '<forsunka>))
  (defparameter *p-in*  (make-instance '<param> :tempreche 288.15 :pressure 2.0e5))
  (defparameter *p-out* (make-instance '<param> :tempreche 288.15 :pressure 1.06e5))
  (defparameter *g*     (make-instance '<gas> :name "Воздух"))
  (area-by-Mass-flow-rate *f* 0.014284128 *p-in* *p-out* *g*)
 |#
 
-(defmethod param_in-by-Mass-flow-rate ((f forsunka) (MFR number) (p-in <param>) (p-out <param>) (g <gas>))
+(defmethod param_in-by-Mass-flow-rate ((f <forsunka>) (MFR number) (p-in <param>) (p-out <param>) (g <gas>))
   "@b(Описание:) метод @b(param_in-by-Mass-flow-rate) возвращает параметры
 на входе в форсунку @b(f).
 
  @b(Переменые:)
 @begin(list)
- @item(f - объект типа forsunka;)
+ @item(f - объект типа <forsunka>;)
  @item(MFR - массовый расход через форсунку;)
  @item(p-in - объект типа <param> параметры перед форсункой. На
              результат влияет только температура;)
@@ -181,7 +181,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (param_in-by-Mass-flow-rate
-  (make-instance 'forsunka :area 27d-6)
+  (make-instance '<forsunka> :area 27d-6)
   0.013291542221359807d0
   (make-instance '<param> :pressure (+ 100000.0 101325.))
   (make-instance '<param>)
@@ -202,14 +202,14 @@
 
 #| 
  (param_in-by-Mass-flow-rate
-  (make-instance 'forsunka :area 27d-6)
+  (make-instance '<forsunka> :area 27d-6)
   0.013291542221359807d0
   (make-instance '<param> :tempreche (+ 273.15 40))
   (make-instance '<param>)
   (make-instance '<gas> :name "Воздух"))
 
  (param_in-by-Mass-flow-rate
-  (make-instance 'forsunka :area 50d-6)
+  (make-instance '<forsunka> :area 50d-6)
   0.013291542221359807d0
   (make-instance '<param> :pressure (+ 0.0 101325.))
   (make-instance '<param>)

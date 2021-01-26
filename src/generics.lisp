@@ -42,35 +42,35 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric mass-flow-rate (forsunka p_in p_out <gas>)
+(defgeneric mass-flow-rate (<forsunka> p_in p_out <gas>)
   (:documentation "Массовый расход через насадок
 Аргументы:
-forsunka - форсунка, определяет площадь;
+<forsunka> - форсунка, определяет площадь;
 MFR      - массовый расход, кг/с;
 p_in     - определяет температуру перед форсункой;
 p_out    - определяет давление за форсункой;
 <gas>      - газ, протекающий через отверстия форсунки."))
 
-(defgeneric area-by-Mass-flow-rate(forsunka MFR p_in p_out <gas>)
-  (:documentation "Определят и устанавливает площадь для форсунки forsunka такую, чтобы через нее проходил массовый расход MFR газа <gas>
+(defgeneric area-by-Mass-flow-rate(<forsunka> MFR p_in p_out <gas>)
+  (:documentation "Определят и устанавливает площадь для форсунки <forsunka> такую, чтобы через нее проходил массовый расход MFR газа <gas>
 при пререпаде на форсунке определяемом давлениями из параметров p_in и p_out при температуре на входе (из параметра p_in).
 Аргументы:
-forsunka - форсунка, определяет площадь;
+<forsunka> - форсунка, определяет площадь;
 MFR      - массовый расход, кг/с;
 p_in     - определяет температуру перед форсункой;
 p_out    - определяет давление за форсункой;
 <gas>      - газ, протекающий через отверстия форсунки."))
 
-(defgeneric param_in-by-Mass-flow-rate (forsunka MFR p_in p_out <gas>)
+(defgeneric param_in-by-Mass-flow-rate (<forsunka> MFR p_in p_out <gas>)
   (:documentation
    " @b(Описание:) обобщенная функция @b(param_in-by-Mass-flow-rate)
  вычисляет давление параметра p_in, при котором через форсунку
- forsunka пройдет массовый расход MFR газа <gas> при давлении на выходе,
+ <forsunka> пройдет массовый расход MFR газа <gas> при давлении на выходе,
  определяемом параметром p_out.
 
  @b(Переменые:)
 @begin(list)
- @item(forsunka - форсунка, определяет площадь;)
+ @item(<forsunka> - форсунка, определяет площадь;)
  @item(MFR - массовый расход, кг/с;)
  @item(p_in - определяет температуру перед форсункой;)
  @item(p_out - определяет давление за форсункой;)
@@ -95,10 +95,10 @@ p_out    - определяет давление за форсункой;
 
 ))
 
-(defgeneric mk-rib (element)
+(defgeneric mk-rib (<element>)
   (:documentation "Создаёт список рёбер, основанный на списке вершин элемента."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric diameter_1 (element)
+(defgeneric diameter_1 (<element>)
   (:documentation "diameter_1"))

@@ -1,5 +1,21 @@
 * Переименование
- - [X] named -> <named>
- - [X] parametrised -> <param>
- - [X] gas - <gas>
- - [X] rib - <rib>
+ - [X] named         -> <named>
+ - [X] parametrised  -> <param>
+ - [X] gas           -> <gas>
+ - [X] rib           -> <rib>
+ - [X] gidro-rib     -> <gidro-rib>
+ - [X] element       -> <element>
+ - [X] truba         -> <truba>
+ - [X] zabornik      -> <zabornik>
+ - [X] metallorukav  -> <metallorukav>
+ - [X] perehod       -> <perehod>
+ - [X] forsunka      -> <forsunka>
+ - [X] ugolnik       -> <ugolnik>
+ - [X] vyxod         -> <vyxod>
+ - [X] vxod          -> <vxod>
+ - [X] troynik       -> <troynik>
+ - [X] teploobmennik -> <teploobmennik>
+ - [X] resiver       -> <resiver>
+ - [X] kompressor    -> <kompressor>
+ - [X] valve         -> <valve>
+ - [X] valve-obr     -> <valve-obr>

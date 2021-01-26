@@ -27,18 +27,18 @@
 	(cons 0.053 0.0018)
 	(cons 0.075 0.002)))
 
-(defun truba-in-dia(diameter)
+(defun <truba>-in-dia(diameter)
   (- (car (assoc diameter tubes-delta))
      (* 2.0 (cdr (assoc diameter tubes-delta)))))
 
-(defparameter ugolnik-data
+(defparameter <ugolnik>-data
   '((0.032 0.026 0.002)
     (0.053 0.0415 0.002)
     (0.075 0.0525 0.002)))
 
-(defun ugolnik-in-dia(diameter)
-  (- (nth 0 (assoc diameter ugolnik-data))
-     (* 2.0 (nth 2 (assoc diameter ugolnik-data)))))
+(defun <ugolnik>-in-dia(diameter)
+  (- (nth 0 (assoc diameter <ugolnik>-data))
+     (* 2.0 (nth 2 (assoc diameter <ugolnik>-data)))))
 
-(defun ugolnik-radius(diameter)
-  (nth 1 (assoc diameter ugolnik-data)))
+(defun <ugolnik>-radius(diameter)
+  (nth 1 (assoc diameter <ugolnik>-data)))
