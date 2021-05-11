@@ -35,9 +35,9 @@
 	echo "mnasoft-00"
   #     sh ~/bin/pi-html
     fi
-    if [[ `hostname` == "N118383" ]]
+    if [[ `hostname` == "N000308" ]]
     then
-	echo "N118383"
+	echo "N000308"
         CPL="//n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs"
 	mkdir -p $CPL/$CDIR
 	rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
@@ -76,7 +76,7 @@
 |                              | 22.99K      | 100% | 119.42kB/s | 0:00:00 |   | 22.99K  | 100% | 119.42kB/s | 0:00:00 | (xfr#13, | to-chk=1/16)  |
 | static/style.css             |             |      |            |         |   |         |      |            |         |          |               |
 |                              | 4.32K       | 100% | 22.45kB/s  | 0:00:00 |   | 4.32K   | 100% | 22.45kB/s  | 0:00:00 | (xfr#14, | to-chk=0/16)  |
-| N118383                      |             |      |            |         |   |         |      |            |         |          |               |
+| N000308                      |             |      |            |         |   |         |      |            |         |          |               |
 | sending                      | incremental | file | list       |         |   |         |      |            |         |          |               |
 | ./                           |             |      |            |         |   |         |      |            |         |          |               |
 | call-graph-idelchik.gv       |             |      |            |         |   |         |      |            |         |          |               |
