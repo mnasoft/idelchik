@@ -60,6 +60,7 @@
 	   mass-flow-rate	; - массовый расход газа через насадок
 	   area-by-Mass-flow-rate ; - площадь насадка по массовому расходу
 	   param_in-by-Mass-flow-rate	; - давление перед насадком
+           velocity-by-param-in-out ; скорость в насадке по параметрам на входе и выходе для определенного газа
 	   )
   (:export pressure tempreche)
   (:export table_aproximate ;; - аппроксимация табличных значений

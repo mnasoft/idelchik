@@ -8,12 +8,51 @@
 
 ;;;; (documentation '*part_01_doc* 'variable)
 
-(defgeneric G-1-80_81(Area param_in param_out <gas>))
+(defgeneric w-1-79 (param_in param_out gas)
+  (:documentation "@b(Описание:) обобщенная функция @b(w-1-79)
+возвращает скорость истечения газа из насадка.
 
-(defmethod G-1-80_81((Area number)
-		     (p-in  <param>)
-		     (p-out <param>)
-		     (g <gas>))
+ @b(Переменые:) 
+@begin(list) 
+@item(param_in  - параметры среды перед насадком;) 
+@item(param_out - параметры среды, в которую истекает газ;)
+@item(gas       - газ.) 
+@end(list) 
+
+Формула Сен-Венана-Венцеля (см. И.Е. Идельчик; Справочник по
+гидравлическим сопротивлениям; 3-е издание, с. 41, формула 1-79."))
+
+(defmethod w-1-79 ((p-in  <param>)
+		   (p-out <param>)
+                   (g     <gas>))
+  (let (
+        (pr-in  (pressure p-in))
+        (pr-out (pressure p-out))
+        (ρ-in  (ρ p-in g))
+        (k     (k g)))
+    (sqrt (* 2.0
+             (/ k (- k 1.0))
+             (/ pr-in ρ-in)
+             (- 1.0
+                (expt
+                 (/ pr-out pr-in)
+                 (/ (1- k) k)))))))
+
+(export 'velocity-by-param-in-out)
+
+(defmethod velocity-by-param-in-out  ((p-in  <param>)
+		                      (p-out <param>)
+                                      (g     <gas>))
+  (w-1-79 p-in p-out g))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric G-1-80_81 (Area param_in param_out <gas>))
+
+(defmethod G-1-80_81 ((Area number)
+		      (p-in  <param>)
+		      (p-out <param>)
+		      (g <gas>))
   "I v3 p41
 Определяет расход воздуха через сопло.
 Пример использования:
@@ -43,11 +82,11 @@
 		    (expt p-out/in 2/k)
 		    (expt p-out/in k+1/k))))))
 	 (G_kr
-	  (* Area
-	     (expt (/ 2 k+1) (/ k-1))
-	     (sqrt (* (/ 2k k+1)
-		      ρ_in
-		      pr_in)))))
+	   (* Area
+	      (expt (/ 2 k+1) (/ k-1))
+	      (sqrt (* (/ 2k k+1)
+		       ρ_in
+		       pr_in)))))
     (cond
       ((>= p-out/in p-out/in_kr)
        (values G "кг/с" "Массовый расход докритическая область"
