@@ -24,6 +24,7 @@
 	   <element>
 	   <truba>
 	   <zabornik>
+           <troynik>
 	   <metallorukav>
 	   <perehod>
 	   <forsunka>
