@@ -29,16 +29,19 @@
  @item(Аммиак)
  @item(Оксид серы\(IV\))
  @item(Гелий)
- @item(Метан )
+ @item(Метан)
  @item(Газ природный)
  @item(Газ попутный нефтяной)
  @item(Газ природный_2010-08-20)
 @end(list)
 "))
 
-(defmethod print-object :before ((x <gas>) s) (format s " #<gas>(" ))
-(defmethod print-object         ((x <gas>) s) (format s "" ))
-(defmethod print-object :after  ((x <gas>) s) (format s ")" ))
+(defmethod print-object :before ((gas <gas>) s) (format s " #<gas>(" ))
+
+(defmethod print-object         ((gas <gas>) s)
+  (format s "name = ~S; k = ~6A; μ = ~6A" (name gas) (k gas) (μ gas)))
+
+(defmethod print-object :after  ((gas <gas>) s) (format s ")" ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -97,8 +100,6 @@
   (format s "(mass-flow-rate=~S area1=~S area2=~S v1=~S v2=~S name=~S)"
 	  (<gidro-rib>-mass-flow-rate x) (<gidro-rib>-area1 x) (<gidro-rib>-area1 x) (<rib>-v1 x) (<rib>-v2 x) (name x)))
 
-
-
 (defclass <element> (<named>)
   ((num  :accessor num
 	 :initarg :num
@@ -114,8 +115,6 @@
 (defmethod print-object         ((x <element>)s) 
   (format s "(num=~S vertexes=~S name=~S )"
 	  (num x) (vertexes x) (name x)))
-
-
 
 (defclass <truba> (<element>)
   ((diameter :accessor diameter :initarg :diameter :initform 1.0

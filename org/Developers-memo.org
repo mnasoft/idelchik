@@ -1,110 +1,137 @@
 * Ссылки [[~/org/sbcl/sbcl-referencies.org][Ссылки]]
 * Генерирование документации
-#+name: codex
-#+BEGIN_SRC lisp
-  (loop
-    :for i :in
-    '((:idelchik      :idelchik))
-    :do (apply #'mnas-package:document i))
-  (codex:document :idelchik)
-#+END_SRC
-
-#+RESULTS: codex
-: NIL
-
 #+name: graphs
-#+BEGIN_SRC lisp :var codex=codex
-  (loop
-    :for i :in
-    '(:idelchik
-      )
-    :do (mnas-package:make-codex-graphs i i))
-#+END_SRC
+#+BEGIN_SRC lisp
+  (defun make-document ()
+    (loop
+      :for i :in
+      '((:idelchik      :idelchik)
+        )
+      :do (apply #'mnas-package:document i)))
 
-#+RESULTS: graphs
-: NIL
+  (defun make-graphs ()
+    (loop
+      :for i :in
+      '(:idelchik)
+      :do (mnas-package:make-codex-graphs i i)))
+
+  (defun make-all ()
+        (make-document)
+        (make-graphs)
+        (codex:document :mnas-package)
+        (make-graphs))
+
+      (make-all)
+#+END_SRC
 
 * Публикация
 #+name: publish
 #+BEGIN_SRC shell :var graphs=graphs
-    mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
-    CDIR=`dirname $PWD | xargs basename`
-    rsync -Pazh --delete ../docs/build/$CDIR/html/ $HOME/public_html/Common-Lisp-Programs/$CDIR 
-    if [[ `hostname` == "mnasoft-00" ]]
+  mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+  CDIR=`dirname $PWD | xargs basename`
+  rsync -Pazh --delete ../docs/build/$CDIR/html/ $HOME/public_html/Common-Lisp-Programs/$CDIR 
+  if [[ `hostname` == "mnasoft-00" ]]
+  then
+      echo "mnasoft-00"
+      pi-html
+  fi
+    if [[ `hostname` == "mnasoft-01" ]]
     then
-	echo "mnasoft-00"
-  #     sh ~/bin/pi-html
+	echo "mnasoft-01"
+        pi-html
     fi
-    if [[ `hostname` == "N118383" ]]
-    then
-	echo "N118383"
-        CPL="//n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs"
-	mkdir -p $CPL/$CDIR
-	rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
-     fi
+  if [[ `hostname` == "N133907" ]]
+  then
+      echo "N000308"
+      CPL="//n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs"
+      mkdir -p $CPL/$CDIR
+      rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
+   fi
 #+END_SRC
 
 #+RESULTS: publish
-| sending                      | incremental | file | list       |         |   |         |      |            |         |          |               |
-| ./                           |             |      |            |         |   |         |      |            |         |          |               |
-| call-graph-idelchik.gv       |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.56K       | 100% | 0.00kB/s   | 0:00:00 |   | 2.56K   | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=14/16) |
-| call-graph-idelchik.gv.png   |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   4% | 2.08MB/s   | 0:00:00 |   | 764.80K | 100% | 9.35MB/s   | 0:00:00 | (xfr#2,  | to-chk=13/16) |
-| class-graph-idelchik.gv      |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.12K       | 100% | 13.97kB/s  | 0:00:00 |   | 1.12K   | 100% | 13.97kB/s  | 0:00:00 | (xfr#3,  | to-chk=12/16) |
-| class-graph-idelchik.gv.png  |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   9% | 410.26kB/s | 0:00:00 |   | 330.56K | 100% | 2.52MB/s   | 0:00:00 | (xfr#4,  | to-chk=11/16) |
-| idelchik.html                |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 30.47K      | 100% | 238.06kB/s | 0:00:00 |   | 30.47K  | 100% | 238.06kB/s | 0:00:00 | (xfr#5,  | to-chk=10/16) |
-| symbol-graph-idelchik.gv     |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.29K       | 100% | 10.10kB/s  | 0:00:00 |   | 1.29K   | 100% | 10.10kB/s  | 0:00:00 | (xfr#6,  | to-chk=9/16)  |
-| symbol-graph-idelchik.gv.png |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   8% | 226.95kB/s | 0:00:01 |   | 387.01K | 100% | 2.15MB/s   | 0:00:00 | (xfr#7,  | to-chk=8/16)  |
-| system-graph-idelchik.gv     |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 303         | 100% | 1.57kB/s   | 0:00:00 |   | 303     | 100% | 1.57kB/s   | 0:00:00 | (xfr#8,  | to-chk=7/16)  |
-| system-graph-idelchik.gv.png |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |  70% | 170.21kB/s | 0:00:00 |   | 46.30K  | 100% | 240.53kB/s | 0:00:00 | (xfr#9,  | to-chk=6/16)  |
-| графы-idelchik.html          |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.38K       | 100% | 12.37kB/s  | 0:00:00 |   | 2.38K   | 100% | 12.37kB/s  | 0:00:00 | (xfr#10, | to-chk=5/16)  |
-| обзор.html                   |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.26K       | 100% | 11.73kB/s  | 0:00:00 |   | 2.26K   | 100% | 11.73kB/s  | 0:00:00 | (xfr#11, | to-chk=4/16)  |
-| static/                      |             |      |            |         |   |         |      |            |         |          |               |
-| static/highlight.css         |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.57K       | 100% | 8.16kB/s   | 0:00:00 |   | 1.57K   | 100% | 8.16kB/s   | 0:00:00 | (xfr#12, | to-chk=2/16)  |
-| static/highlight.js          |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 22.99K      | 100% | 119.42kB/s | 0:00:00 |   | 22.99K  | 100% | 119.42kB/s | 0:00:00 | (xfr#13, | to-chk=1/16)  |
-| static/style.css             |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 4.32K       | 100% | 22.45kB/s  | 0:00:00 |   | 4.32K   | 100% | 22.45kB/s  | 0:00:00 | (xfr#14, | to-chk=0/16)  |
-| N118383                      |             |      |            |         |   |         |      |            |         |          |               |
-| sending                      | incremental | file | list       |         |   |         |      |            |         |          |               |
-| ./                           |             |      |            |         |   |         |      |            |         |          |               |
-| call-graph-idelchik.gv       |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.56K       | 100% | 0.00kB/s   | 0:00:00 |   | 2.56K   | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=14/16) |
-| call-graph-idelchik.gv.png   |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   4% | 31.25MB/s  | 0:00:00 |   | 764.80K | 100% | 5.88MB/s   | 0:00:00 | (xfr#2,  | to-chk=13/16) |
-| class-graph-idelchik.gv      |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.12K       | 100% | 8.79kB/s   | 0:00:00 |   | 1.12K   | 100% | 8.79kB/s   | 0:00:00 | (xfr#3,  | to-chk=12/16) |
-| class-graph-idelchik.gv.png  |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   9% | 258.06kB/s | 0:00:01 |   | 330.56K | 100% | 1.01MB/s   | 0:00:00 | (xfr#4,  | to-chk=11/16) |
-| idelchik.html                |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 30.47K      | 100% | 95.38kB/s  | 0:00:00 |   | 30.47K  | 100% | 95.38kB/s  | 0:00:00 | (xfr#5,  | to-chk=10/16) |
-| symbol-graph-idelchik.gv     |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.29K       | 100% | 4.05kB/s   | 0:00:00 |   | 1.29K   | 100% | 4.05kB/s   | 0:00:00 | (xfr#6,  | to-chk=9/16)  |
-| symbol-graph-idelchik.gv.png |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |   8% | 102.56kB/s | 0:00:03 |   | 387.01K | 100% | 692.19kB/s | 0:00:00 | (xfr#7,  | to-chk=8/16)  |
-| system-graph-idelchik.gv     |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 303         | 100% | 0.54kB/s   | 0:00:00 |   | 303     | 100% | 0.54kB/s   | 0:00:00 | (xfr#8,  | to-chk=7/16)  |
-| system-graph-idelchik.gv.png |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 32.77K      |  70% | 58.61kB/s  | 0:00:00 |   | 46.30K  | 100% | 82.82kB/s  | 0:00:00 | (xfr#9,  | to-chk=6/16)  |
-| графы-idelchik.html          |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.38K       | 100% | 4.26kB/s   | 0:00:00 |   | 2.38K   | 100% | 4.26kB/s   | 0:00:00 | (xfr#10, | to-chk=5/16)  |
-| обзор.html                   |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 2.26K       | 100% | 4.04kB/s   | 0:00:00 |   | 2.26K   | 100% | 4.04kB/s   | 0:00:00 | (xfr#11, | to-chk=4/16)  |
-| static/                      |             |      |            |         |   |         |      |            |         |          |               |
-| static/highlight.css         |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 1.57K       | 100% | 2.81kB/s   | 0:00:00 |   | 1.57K   | 100% | 2.81kB/s   | 0:00:00 | (xfr#12, | to-chk=2/16)  |
-| static/highlight.js          |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 22.99K      | 100% | 41.12kB/s  | 0:00:00 |   | 22.99K  | 100% | 41.12kB/s  | 0:00:00 | (xfr#13, | to-chk=1/16)  |
-| static/style.css             |             |      |            |         |   |         |      |            |         |          |               |
-|                              | 4.32K       | 100% | 7.51kB/s   | 0:00:00 |   | 4.32K   | 100% | 7.51kB/s   | 0:00:00 | (xfr#14, | to-chk=0/16)  |
+| sending                      | incremental   |                                                   file | list       |         |    |         |      |            |         |          |               |
+| created                      | directory     | /home/namatv/public_html/Common-Lisp-Programs/idelchik |            |         |    |         |      |            |         |          |               |
+| ./                           |               |                                                        |            |         |    |         |      |            |         |          |               |
+| call-graph-idelchik.gv       |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.57K         |                                                   100% | 0.00kB/s   | 0:00:00 |  | 2.57K   | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=18/20) |
+| call-graph-idelchik.gv.png   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                     5% | 2.60MB/s   | 0:00:00 |  | 633.38K | 100% | 31.79MB/s  | 0:00:00 | (xfr#2,  | to-chk=17/20) |
+| class-graph-idelchik.gv      |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.28K         |                                                   100% | 65.89kB/s  | 0:00:00 |  | 1.28K   | 100% | 65.89kB/s  | 0:00:00 | (xfr#3,  | to-chk=16/20) |
+| class-graph-idelchik.gv.png  |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                    10% | 1.64MB/s   | 0:00:00 |  | 302.62K | 100% | 13.12MB/s  | 0:00:00 | (xfr#4,  | to-chk=15/20) |
+| classes.html                 |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                    34% | 1.42MB/s   | 0:00:00 |  | 94.37K  | 100% | 4.09MB/s   | 0:00:00 | (xfr#5,  | to-chk=14/20) |
+| functions.html               |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.46K         |                                                   100% | 104.36kB/s | 0:00:00 |  | 2.46K   | 100% | 104.36kB/s | 0:00:00 | (xfr#6,  | to-chk=13/20) |
+| generics.html                |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 7.92K         |                                                   100% | 336.36kB/s | 0:00:00 |  | 7.92K   | 100% | 336.36kB/s | 0:00:00 | (xfr#7,  | to-chk=12/20) |
+| symbol-graph-idelchik.gv     |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.26K         |                                                   100% | 53.67kB/s  | 0:00:00 |  | 1.26K   | 100% | 53.67kB/s  | 0:00:00 | (xfr#8,  | to-chk=11/20) |
+| symbol-graph-idelchik.gv.png |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                     8% | 1.36MB/s   | 0:00:00 |  | 365.40K | 100% | 13.40MB/s  | 0:00:00 | (xfr#9,  | to-chk=10/20) |
+| system-graph-idelchik.gv     |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 198           |                                                   100% | 7.44kB/s   | 0:00:00 |  | 198     | 100% | 7.44kB/s   | 0:00:00 | (xfr#10, | to-chk=9/20)  |
+| system-graph-idelchik.gv.png |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 28.62K        |                                                   100% | 1.01MB/s   | 0:00:00 |  | 28.62K  | 100% | 1.01MB/s   | 0:00:00 | (xfr#11, | to-chk=8/20)  |
+| types.html                   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.44K         |                                                   100% | 88.36kB/s  | 0:00:00 |  | 2.44K   | 100% | 88.36kB/s  | 0:00:00 | (xfr#12, | to-chk=7/20)  |
+| variables.html               |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 6.42K         |                                                   100% | 232.24kB/s | 0:00:00 |  | 6.42K   | 100% | 232.24kB/s | 0:00:00 | (xfr#13, | to-chk=6/20)  |
+| графы-idelchik.html          |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.19K         |                                                   100% | 79.17kB/s  | 0:00:00 |  | 2.19K   | 100% | 79.17kB/s  | 0:00:00 | (xfr#14, | to-chk=5/20)  |
+| обзор.html                   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.86K         |                                                   100% | 67.42kB/s  | 0:00:00 |  | 1.86K   | 100% | 67.42kB/s  | 0:00:00 | (xfr#15, | to-chk=4/20)  |
+| static/                      |               |                                                        |            |         |    |         |      |            |         |          |               |
+| static/highlight.css         |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.57K         |                                                   100% | 54.79kB/s  | 0:00:00 |  | 1.57K   | 100% | 54.79kB/s  | 0:00:00 | (xfr#16, | to-chk=2/20)  |
+| static/highlight.js          |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 22.99K        |                                                   100% | 801.79kB/s | 0:00:00 |  | 22.99K  | 100% | 801.79kB/s | 0:00:00 | (xfr#17, | to-chk=1/20)  |
+| static/style.css             |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 4.32K         |                                                   100% | 150.60kB/s | 0:00:00 |  | 4.32K   | 100% | 150.60kB/s | 0:00:00 | (xfr#18, | to-chk=0/20)  |
+| N000308                      |               |                                                        |            |         |    |         |      |            |         |          |               |
+| sending                      | incremental   |                                                   file | list       |         |    |         |      |            |         |          |               |
+| deleting                     | idelchik.html |                                                        |            |         |    |         |      |            |         |          |               |
+| ./                           |               |                                                        |            |         |    |         |      |            |         |          |               |
+| call-graph-idelchik.gv       |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.57K         |                                                   100% | 0.00kB/s   | 0:00:00 |  | 2.57K   | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=18/20) |
+| call-graph-idelchik.gv.png   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                     5% | 31.25MB/s  | 0:00:00 |  | 633.38K | 100% | 86.29MB/s  | 0:00:00 | (xfr#2,  | to-chk=17/20) |
+| class-graph-idelchik.gv      |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.28K         |                                                   100% | 178.85kB/s | 0:00:00 |  | 1.28K   | 100% | 178.85kB/s | 0:00:00 | (xfr#3,  | to-chk=16/20) |
+| class-graph-idelchik.gv.png  |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                    10% | 4.46MB/s   | 0:00:00 |  | 302.62K | 100% | 28.86MB/s  | 0:00:00 | (xfr#4,  | to-chk=15/20) |
+| classes.html                 |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                    34% | 3.12MB/s   | 0:00:00 |  | 94.37K  | 100% | 9.00MB/s   | 0:00:00 | (xfr#5,  | to-chk=14/20) |
+| functions.html               |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.46K         |                                                   100% | 218.22kB/s | 0:00:00 |  | 2.46K   | 100% | 218.22kB/s | 0:00:00 | (xfr#6,  | to-chk=13/20) |
+| generics.html                |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 7.92K         |                                                   100% | 703.30kB/s | 0:00:00 |  | 7.92K   | 100% | 703.30kB/s | 0:00:00 | (xfr#7,  | to-chk=12/20) |
+| symbol-graph-idelchik.gv     |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.26K         |                                                   100% | 112.22kB/s | 0:00:00 |  | 1.26K   | 100% | 112.22kB/s | 0:00:00 | (xfr#8,  | to-chk=11/20) |
+| symbol-graph-idelchik.gv.png |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 32.77K        |                                                     8% | 2.84MB/s   | 0:00:00 |  | 365.40K | 100% | 24.89MB/s  | 0:00:00 | (xfr#9,  | to-chk=10/20) |
+| system-graph-idelchik.gv     |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 198           |                                                   100% | 12.89kB/s  | 0:00:00 |  | 198     | 100% | 12.89kB/s  | 0:00:00 | (xfr#10, | to-chk=9/20)  |
+| system-graph-idelchik.gv.png |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 28.62K        |                                                   100% | 1.82MB/s   | 0:00:00 |  | 28.62K  | 100% | 1.82MB/s   | 0:00:00 | (xfr#11, | to-chk=8/20)  |
+| types.html                   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.44K         |                                                   100% | 159.05kB/s | 0:00:00 |  | 2.44K   | 100% | 159.05kB/s | 0:00:00 | (xfr#12, | to-chk=7/20)  |
+| variables.html               |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 6.42K         |                                                   100% | 418.03kB/s | 0:00:00 |  | 6.42K   | 100% | 418.03kB/s | 0:00:00 | (xfr#13, | to-chk=6/20)  |
+| графы-idelchik.html          |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 2.19K         |                                                   100% | 133.61kB/s | 0:00:00 |  | 2.19K   | 100% | 133.61kB/s | 0:00:00 | (xfr#14, | to-chk=5/20)  |
+| обзор.html                   |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.86K         |                                                   100% | 113.77kB/s | 0:00:00 |  | 1.86K   | 100% | 113.77kB/s | 0:00:00 | (xfr#15, | to-chk=4/20)  |
+| static/                      |               |                                                        |            |         |    |         |      |            |         |          |               |
+| static/highlight.css         |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 1.57K         |                                                   100% | 95.89kB/s  | 0:00:00 |  | 1.57K   | 100% | 95.89kB/s  | 0:00:00 | (xfr#16, | to-chk=2/20)  |
+| static/highlight.js          |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 22.99K        |                                                   100% | 1.37MB/s   | 0:00:00 |  | 22.99K  | 100% | 1.37MB/s   | 0:00:00 | (xfr#17, | to-chk=1/20)  |
+| static/style.css             |               |                                                        |            |         |    |         |      |            |         |          |               |
+|                            | 4.32K         |                                                   100% | 263.55kB/s | 0:00:00 |  | 4.32K   | 100% | 263.55kB/s | 0:00:00 | (xfr#18, | to-chk=0/20)  |
+
+
+
+

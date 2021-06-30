@@ -83,7 +83,7 @@ p_out    - определяет давление за форсункой;
 (defgeneric out (<rib>)
   (:documentation "Выполняет вывод объекта на печать"))
 
-(defgeneric <rib>-name (<rib>)
+(defgeneric <rib>-name (<rib>  &optional stream)
   (:documentation
    " @b(Описание:) обобщенная_функция @b(<rib>-name) выполняет вывод на
  печать списка рёбер в форме пригодной для вставки в исходный код
@@ -91,9 +91,7 @@ p_out    - определяет давление за форсункой;
  @b(Пример исползования:)
 @begin[lang=lisp](code)
   (mapcar #'(lambda (el) (<rib>-name el)) ribs)
-@end(code)"
-
-))
+@end(code)"))
 
 (defgeneric mk-rib (<element>)
   (:documentation "Создаёт список рёбер, основанный на списке вершин элемента."))
