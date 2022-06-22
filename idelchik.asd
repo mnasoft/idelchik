@@ -4,7 +4,7 @@
 (defsystem "idelchik"
   :description "@b(Описание:) система @b(idelchik) предоставляет некоторые
 формулы монографии Идельчика по расчету гидравлических сопротивлений"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("varghaftik" "areas" "half-div")
   :serial nil
@@ -39,6 +39,6 @@
 
 (defsystem #:idelchik/docs
   :description "@b(Описание:) система @b(idelchik/docs) для создания документации."
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("idelchik" "mnas-package" "codex"))

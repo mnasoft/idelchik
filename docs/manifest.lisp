@@ -2,7 +2,7 @@
  :scriba
  :systems (:idelchik)
  :documents ((:title "Idelchik"
-		     :authors ("Nick Matvyeyev")
+		     :authors ("Mykola Matvyeyev")
 		     :output-format (:type :multi-html :template :minima)
               :sources ("idelchik.scr"
 			"idelchik-graph.scr"))))
