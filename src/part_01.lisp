@@ -229,7 +229,7 @@
 @end(code)
 "
   (let ((p-in_rez p-in))
-    (setf (pressure p-in_rez) (half-div:h-div-lst
+    (setf (pressure p-in_rez) (math/half-div:h-div-lst
 			       (* 1e6 (pressure p-out))
 			       (pressure p-out)
 			       #'(lambda(pr_in f M p-in_rez p-out g)

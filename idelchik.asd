@@ -6,7 +6,7 @@
 формулы монографии Идельчика по расчету гидравлических сопротивлений"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :depends-on ("varghaftik" "areas" "half-div")
+  :depends-on ("varghaftik" "areas" "math/half-div")
   :serial nil
   :components
   ((:file "package")
