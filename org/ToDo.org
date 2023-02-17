@@ -1,24 +1,38 @@
-* [0/1] ToDo
+* [0/2] ToDo
   - [ ] Добавить черновую документацию
+  - [ ] Выделить отдельные части в пакеты
+    - [ ] part-01;
+    - [ ] part-02;
+    - [ ] part-03;      
+    - [ ] part-04;
+    - [ ] part-05;
+    - [ ] part-06;
+    - [ ] part-07;
+    - [ ] part-08;
+    - [ ] part-09;
+    - [ ] part-10;
+    - [ ] part-11;
+    - [ ] part-12;       
     
-* Переименование
- - [X] named         -> <named>
- - [X] parametrised  -> <param>
- - [X] gas           -> <gas>
- - [X] rib           -> <rib>
- - [X] gidro-rib     -> <gidro-rib>
- - [X] element       -> <element>
- - [X] truba         -> <truba>
- - [X] zabornik      -> <zabornik>
- - [X] metallorukav  -> <metallorukav>
- - [X] perehod       -> <perehod>
- - [X] forsunka      -> <forsunka>
- - [X] ugolnik       -> <ugolnik>
- - [X] vyxod         -> <vyxod>
- - [X] vxod          -> <vxod>
- - [X] troynik       -> <troynik>
- - [X] teploobmennik -> <teploobmennik>
- - [X] resiver       -> <resiver>
- - [X] kompressor    -> <kompressor>
- - [X] valve         -> <valve>
- - [X] valve-obr     -> <valve-obr>
+* DoNe
+1. [X] Переименование:
+   - [X] named         -> <named>;
+   - [X] parametrised  -> <param>;
+   - [X] gas           -> <gas>;
+   - [X] rib           -> <rib>;
+   - [X] gidro-rib     -> <gidro-rib>;
+   - [X] element       -> <element>;
+   - [X] truba         -> <truba>;
+   - [X] zabornik      -> <zabornik>;
+   - [X] metallorukav  -> <metallorukav>;
+   - [X] perehod       -> <perehod>;
+   - [X] forsunka      -> <forsunka>;
+   - [X] ugolnik       -> <ugolnik>;
+   - [X] vyxod         -> <vyxod>;
+   - [X] vxod          -> <vxod>;
+   - [X] troynik       -> <troynik>;
+   - [X] teploobmennik -> <teploobmennik>;
+   - [X] resiver       -> <resiver>;
+   - [X] kompressor    -> <kompressor>;
+   - [X] valve         -> <valve>;
+   - [X] valve-obr     -> <valve-obr>.
