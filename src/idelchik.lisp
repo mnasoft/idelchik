@@ -47,6 +47,9 @@
 	   diameter_3
            delta
 	   )
+  (:export <gas-k-mu>
+           <gas-k-mu>-k
+           <gas-k-mu>-mu)
   (:export make-rib-name
            make-<gidro-rib>)
   (:export name)
