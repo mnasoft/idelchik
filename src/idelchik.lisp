@@ -192,6 +192,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;
 
+(defclass <gas-k-mu> (<gas>)
+  ((k  :accessor <gas-k-mu>-k  :initarg :k  :initform 1.4     :documentation "Коэффициент адиабаты")
+   (mu :accessor <gas-k-mu>-mu :initarg :mu :initform 0.02895 :documentation "Молекулярная масса газа"))
+  (:documentation
+   "@b(Описание:) класс @b(<gas-k-mu>) представляет газ с возможностью
+    задания его коэффициента адиабаты и молекулярной массы."))
+
 (defclass <param> (<named>)
   ((pressure   :accessor pressure    :initarg :pressure  :initform 101325.0
 	       :documentation "Абсолютное статическое давление [Па].")
@@ -560,7 +567,10 @@ p_out    - определяет давление за форсункой;
 @begin[lang=lisp](code)
  (idelchik:μ (make-instance 'idelchik:<gas> :name \"Воздух\"))
 @end(code)"
-  (values (varghaftik:μ :gas_name (name gas)) "[kg/mol]" "Молекулярная масса газа"))
+  (values (varghaftik:mu :gas_name (name gas)) "[kg/mol]" "Молекулярная масса газа"))
+
+(defmethod μ ((gas-k-mu <gas-k-mu>))
+  (<gas-k-mu>-mu gas-k-mu))
 
 (defmethod k ((gas <gas>))
   "@b(Описание:) функция @b(k) возвращает коэффициент адиабаты газа.
@@ -571,6 +581,9 @@ p_out    - определяет давление за форсункой;
 @end(code)"
   (values (varghaftik:k :gas_name (name gas))"[1]" "Показатель адиабаты" ))
 
+(defmethod k ((gas-k-mu <gas-k-mu>))
+  (<gas-k-mu>-k gas-k-mu))
+
 (defmethod ρ ((param <param>) (gas <gas>))
   "@b(Описание:) функция @b(ρ) возвращает плотность газа, [kg/m^3].
 
@@ -578,7 +591,7 @@ p_out    - определяет давление за форсункой;
 @begin[lang=lisp](code)
  (idelchik:ρ (make-instance 'idelchik:<gas> :name \"Воздух\"))
 @end(code)"
-  (values (/ (* (pressure param) (μ gas) ) (* varghaftik:Rμ (tempreche param)))
+  (values (/ (* (pressure param) (μ gas) ) (* varghaftik:R-mu (tempreche param)))
 	  "[kg/m^3]" "Плотность газа"))
 
 (defmethod η((p <param>) (gas <gas>))
@@ -588,7 +601,7 @@ p_out    - определяет давление за форсункой;
 @begin[lang=lisp](code)
  (idelchik:ρ (make-instance 'idelchik:<gas> :name \"Воздух\"))
 @end(code)"
-  (values (varghaftik:η_sazerlend (tempreche p) :gas_name (name gas))
+  (values (varghaftik:n-sazerlend (tempreche p) :gas_name (name gas))
 	  "[Pa*s]"
 	  "Коэффициент динамической вязкости газа"))
 
