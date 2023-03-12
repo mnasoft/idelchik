@@ -1,6 +1,6 @@
 ;;;; test.list
 
-(in-package #:idelchik)
+(in-package :idelchik)
 
 (defparameter p1  (make-instance '<param> :pressure (* 20. 101325.) :tempreche (+ 273.0 480.0)))
 (defparameter g1  (make-instance '<gas> :name "Воздух"))

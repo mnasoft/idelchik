@@ -1,6 +1,6 @@
 ;;;; method-out.lisp
 
-(in-package #:idelchik)
+(in-package :idelchik)
 
 (defmethod out ((x <rib>))
   (format T "~A->~A;~%" (<rib>-v1 x) (<rib>-v2 x)))

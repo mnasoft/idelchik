@@ -1,6 +1,6 @@
 ;;;; elements.lisp
 
-(in-package #:idelchik)
+(in-package :idelchik)
 
 ;;; "idelchik" goes here. Hacks and glory await!
 

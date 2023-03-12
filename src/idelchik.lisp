@@ -1,6 +1,6 @@
 ;;;; idelchik.lisp
 
-(defpackage #:idelchik
+(defpackage :idelchik
   (:use #:cl  ) 
   (:export lg)
   (:export *part_01_doc*
@@ -143,7 +143,7 @@
 Предметный указатель
 "))
 
-(in-package #:idelchik)
+(in-package :idelchik)
 
 (defun lg (x)
   "Функция вычисления десятичного логарифма"
@@ -1789,7 +1789,7 @@ k=0.3 для сварных тройников
 ;;;; part_8.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:idelchik)
+(in-package :idelchik)
 
 (defparameter *part_08_doc*
   "Часть 8"
